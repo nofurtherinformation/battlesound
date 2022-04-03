@@ -20,7 +20,7 @@ export function ExplainerTextBox({
 	children,
 	singleCol=false
 }) {
-	const { width, left, top, right, bottom, minHeight } = position
+	const { width, left, top, right, bottom, minHeight, aspectRatio } = position
 	return (
 		<Box
 			position={singleCol ? "initial" : "absolute"}
@@ -32,6 +32,9 @@ export function ExplainerTextBox({
 			border={border ? '1px solid white' : 'none'}
 			padding={border ? padding : '0'}
 			minHeight={minHeight || 'initial'}
+			style={{
+				aspactRatio: aspectRatio || 'initial',
+			}}
 		>
 			{children}
 		</Box>

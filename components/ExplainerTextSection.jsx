@@ -30,10 +30,10 @@ const translations = {
 		uk_UA: 'Для допомоги громадян України в війні, ми повинні знати, що відбувається в містах України.'
 	},
 	Motivation2: {
-		en_US: "To aid Ukraine's citizens in the war, we need to know what happens in Ukraine's cities.",
-		zh_CN: '为了帮助英国人民在战争中，我们需要知道英国城市的情况。',
-		ru_RU: 'Для помощи граждан Украины в войне, мы должны знать, что происходит в городах Украины.',
-		uk_UA: 'Для допомоги громадян України в війні, ми повинні знати, що відбувається в містах України.'
+		en_US: "But our knowledge of events on the street are incomplete. So, we must find ways to learn more.",
+		zh_CN: '但我们的街道上的事件知识不完整。所以，我们必须找到一些方法来学习更多。',
+		ru_RU: 'Но наше знание событий на улице неполное. Поэтому мы должны найти способытия, чтобы узнать больше.',
+		uk_UA: 'Але наша знання про події на вулиці неповні. Тому ми повинні знайти способи, щоб дізнатися більше.'
 	},
 	Method1: {
 		en_US: "To do this, we can listen to the city, events on the ground, & sounds traveling through the streets.",
@@ -157,13 +157,15 @@ export default function ExplainerTextSection({
 						right: '0',
 						top: '30%',
 						width: '40%',
-						minHeight: '300px'
+						minHeight: '300px', 
+						aspectRatio: '1.5'
 					},
 					lg: {
 						right: '10%',
 						top: '30%',
 						width: '50%',
-						minHeight: '300px'
+						minHeight: '300px', 
+						aspectRatio: '1.5'
 					}
 				},
 				border: false,
@@ -198,13 +200,15 @@ export default function ExplainerTextSection({
 						left: '0',
 						top: '20%',
 						width: '40%',
-						minHeight: '300px'
+						minHeight: '300px',
+						aspectRatio: '1.5'
 					},
 					lg: {
 						left: '10%',
 						top: '20%',
 						width: '50%',
-						minHeight: '300px'
+						minHeight: '300px',
+						aspectRatio: '1.5'
 					}
 				},
 				border: false,

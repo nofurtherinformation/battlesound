@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useLittera, useLitteraMethods } from '@assembless/react-littera'
 import { Link, Box, Button, ButtonGroup } from '@mui/material'
+import useLocalStorage from '../hooks/useLocalStorage'
 
 const translations = {
 	Home: {
@@ -74,8 +75,16 @@ const translationOptions = [
 ]
 
 const TranslationButtons = () => {
+	const [locale, setLocale] = useLocalStorage('persisted_locale', 'en_US')
 	const methods = useLitteraMethods()
-	const handleLocaleChange = (value) => methods.setLocale(value)
+	const handleLocaleChange = (value) => {
+		setLocale(value)
+		methods.setLocale(value)
+	}
+	useEffect(() => {
+		methods.setLocale(locale)
+	}, [])
+
 	return (
 		<ButtonGroup variant="text">
 			{translationOptions.map(({ label, value }) => (
@@ -107,7 +116,7 @@ export default function Nav({ page = '' }) {
 				top: 0,
 				right: 0,
 				padding: '1em',
-				zIndex:1
+				zIndex: 1
 			}}
 		>
 			<nav>
