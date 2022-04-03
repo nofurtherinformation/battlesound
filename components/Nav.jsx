@@ -83,7 +83,7 @@ const TranslationButtons = () => {
 	}
 	useEffect(() => {
 		methods.setLocale(locale)
-	}, [])
+	}, []) // eslint-disable-line react-hooks/exhaustive-deps
 
 	return (
 		<ButtonGroup variant="text">

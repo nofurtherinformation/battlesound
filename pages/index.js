@@ -28,11 +28,6 @@ export default function Home() {
 					name="description"
 					content="How can sound protect Ukraine's people from attack?"
 				/>
-				<link rel="icon" href="/favicon.ico" />
-				<link
-					href="https://fonts.googleapis.com/css2?family=Anonymous+Pro:wght@400;700&display=swap"
-					rel="stylesheet"
-				/>
 			</Head>
 			<Nav page="Home" />
 			<ExplainerTextSection currentStepIndex={currentStepIndex} onStepEnter={onStepEnter} />
