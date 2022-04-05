@@ -1,14 +1,20 @@
 import NextAuth from 'next-auth'
 import EmailProvider from 'next-auth/providers/email'
-import { PrismaAdapter } from '@next-auth/prisma-adapter'
-import { PrismaClient } from '@prisma/client'
-const prisma = new PrismaClient()
+// import { PrismaAdapter } from '@next-auth/prisma-adapter'
+// import { PrismaClient } from '@prisma/client'
+// const prisma = new PrismaClient()
+import { FaunaAdapter } from "@next-auth/fauna-adapter"
+import { Client as FaunaClient } from "faunadb"
+
+const client = new FaunaClient({
+	secret: process.env.FDB_SECRET
+})
 
 export default function auth(...args) {
 	console.log('STARTING AUTH')
 	// console.log(prisma)
 	return NextAuth({
-		adapter: PrismaAdapter(prisma),
+		adapter: FaunaAdapter(client),
 		providers: [
 			EmailProvider({
 				server: {
