@@ -1,13 +1,12 @@
 import NextAuth from 'next-auth'
 import EmailProvider from 'next-auth/providers/email'
-import CredentialsProvider from 'next-auth/providers/credentials'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
 export default function auth(...args) {
-	console.log('STARTING TO AUTH', ...args)
-	console.log(prisma)
+	console.log('STARTING AUTH')
+	// console.log(prisma)
 	return NextAuth({
 		adapter: PrismaAdapter(prisma),
 		providers: [
