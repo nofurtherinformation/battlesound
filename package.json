@@ -28,8 +28,7 @@
     "react": "18.0.0",
     "react-dom": "18.0.0",
     "react-map-gl": "^7.0.10",
-    "react-scrollama": "^2.3.0",
-    "react-scrollama2": "^1.0.0"
+    "react-scrollama": "^2.3.0"
   },
   "devDependencies": {
     "eslint": "8.12.0",
