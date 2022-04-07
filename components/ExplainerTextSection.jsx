@@ -39,7 +39,7 @@ const translations = {
 		uk_UA: 'Звук'
 	},
 	SplashPage: {
-		en_US: 'The sounds of Ukraine can identify attacks,  help protect refugee efforts & people sheltering in place.',
+		en_US: 'The sounds of Ukraine can identify attacks, aid rescue efforts, and protect people sheltering from harm.',
 		zh_CN: '英国的音乐可以识别攻击，帮助保护流浪人的行动，并且可以提供在场的人们的安全。',
 		ru_RU: 'Звуки Украины могут определить атаки, помогать защитить прохождение обороны и людей, которые находятся в положении.',
 		uk_UA: 'Звуки України можуть визначати атаки, допомогти захисту експериментів про переселення i людей, що знаходяться в місці.'
@@ -69,19 +69,19 @@ const translations = {
 		uk_UA: 'Ми працювали з волонтерами, щоб помістити мобільні телефони на верхніх будинках в Києві.'
 	},
 	Method3: {
-		en_US: 'When a shell or bomb hits in the city, shots are fired, or sirens blare, each phone hears the sound at a slightly different time.',
+		en_US: 'When shots are fired, shells hit in the city, or sirens blare, each phone hears the sound at a slightly different time.',
 		zh_CN: '当城市上的炮弹或炸弹击中时，射击被发射，或者警报响起时，每个手机都会听到不同的声音。',
 		ru_RU: 'Когда в городе попадает бомба или снаряд, выстрелы выстреляются, или будильники звенят, каждый телефон слышит этот звук с небольшим интервалом.',
 		uk_UA: 'Коли в місті попадає бомба чи снаряд, вистріли вистріляються, або будильники звенять, кожен телефон записує цей звук з невеликим інтервалом.'
 	},
 	Method4: {
-		en_US: 'By calculating the time delay, we can locate the source of the sound. Using machine learning, we can identify what type of sound occured.',
+		en_US: 'By calculating the time delay, we can geolocate the source of the sound. Using machine learning, we can identify what type of sound occured.',
 		zh_CN: '通过计算延迟时间，我们可以定位声音的来源。使用机器学习，我们可以识别出声音的类型。',
 		ru_RU: 'Путем расчета времени задержки, мы можем определить источник этого звука. Используя машинное обучение, мы можем определить, что тип звука произошел.',
 		uk_UA: 'Починаючи з розрахунку часу затримки, ми можемо визначити джерело цього звуку. Використовуючи машинне обучення, ми можемо визначити, що тип звуку произошев.'
 	},
 	Onboarding: {
-		en_US: 'Explore detections on the map from 4/2/2022. For real-time data users, log in below.',
+		en_US: "These sounds help capture what's happening on the ground in Ukraine.  Explore detections on the map from {last public date}. For real-time data users, log in below.",
 		zh_CN: '从4月2日至4月6日查看在地图上的检测。对于实时数据用户，请登录。',
 		ru_RU: 'Просмотреть обнаружения на карте от 4 апреля 2022 года. Для реального времени пользователей, войдите ниже.',
 		uk_UA: 'Дивіться виявлення на мапі від 4 квітня 2022 року. Для реального часу користувачів, входіть нижче.'
@@ -373,7 +373,7 @@ export default function ExplainerTextSection({
 					md: {
 						left: '0',
 						top: '10%',
-						width: '50%'
+						width: '75%'
 					},
 					lg: {
 						left: '10%',
@@ -392,12 +392,12 @@ export default function ExplainerTextSection({
 				position: {
 					md: {
 						left: '0',
-						top: '50%',
+						bottom: '0',
 						width: '100%'
 					},
 					lg: {
 						left: '10%',
-						top: '50%',
+						bottom: '0',
 						width: '100%'
 					}
 				},
