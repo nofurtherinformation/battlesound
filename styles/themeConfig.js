@@ -10,6 +10,7 @@ export const themeOptions = {
       },
       background: {
         default: '#004c9a',
+        sapphire: '#005BBB',
         paper: '#00366f',
       },
       text: {

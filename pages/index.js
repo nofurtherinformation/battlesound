@@ -5,6 +5,8 @@ import dynamic from 'next/dynamic'
 import styles from '../styles/Home.module.css'
 import { Container, Box, Typography } from '@mui/material'
 import Nav from '../components/Nav'
+import Footer from '../components/Footer'
+import ExplainerMap from '../components/ExplainerMap'
 
 const ExplainerTextSection = dynamic(
 	() => import('../components/ExplainerTextSection'),
@@ -30,7 +32,9 @@ export default function Home() {
 				/>
 			</Head>
 			<Nav page="Home" />
+			{currentStepIndex > 1 && <ExplainerMap currentStepIndex={currentStepIndex} />}
 			<ExplainerTextSection currentStepIndex={currentStepIndex} onStepEnter={onStepEnter} />
+			<Footer />
 		</div>
 	)
 }

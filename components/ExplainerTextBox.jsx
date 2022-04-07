@@ -20,10 +20,13 @@ export function ExplainerTextBox({
 	children,
 	singleCol=false
 }) {
-	const { width, left, top, right, bottom, minHeight, aspectRatio } = position
+	const { width, left, top, right, bottom, minHeight, aspectRatio } = position;
 	return (
 		<Box
-			position={singleCol ? "initial" : "absolute"}
+			sx={{
+				backgroundColor: "background.sapphire"
+			}}
+			position={singleCol ? "relative" : "absolute"}
 			width={singleCol ? "100%" : width || 'auto'}
 			left={left || 'initial'}
 			right={right || 'initial'}
@@ -33,7 +36,7 @@ export function ExplainerTextBox({
 			padding={border ? padding : '0'}
 			minHeight={minHeight || 'initial'}
 			style={{
-				aspactRatio: aspectRatio || 'initial',
+				aspectRatio: aspectRatio || 'initial',
 			}}
 		>
 			{children}

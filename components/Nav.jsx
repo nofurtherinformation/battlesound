@@ -106,7 +106,7 @@ export default function Nav({ page = '' }) {
 		<Box
 			sx={{
 				maxWidth: '100vw',
-				backgroundColor: 'background.primary',
+				backgroundColor: 'background.default',
 				borderWidth: 1,
 				borderRight: 0,
 				borderTop: 0,

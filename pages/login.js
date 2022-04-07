@@ -31,7 +31,7 @@ export default function AboutPage() {
 					content="How can sound protect Ukraine's people from attack?"
 				/>
 			</Head>
-			<Nav page="About" />
+			<Nav page="Login" />
 			<Typography variant="h1" color="primary">
 				Login
 			</Typography>
