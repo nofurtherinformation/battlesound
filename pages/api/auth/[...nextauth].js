@@ -25,7 +25,7 @@ const AuthOptions = {
 			return token
 		},
 		async signIn({ user, account, profile, email, credentials }) {
-			if (process.env.ALLOWLIST_USERS.split('|').includes(`${providerMapping[profile.iss]}-${profile.email}`)){
+			if (process.env.ALLOWLIST_USERS.split(';').includes(`${providerMapping[profile.iss]}:${profile.email}`)){
 				return true
 			} else {
 				return false
