@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import Head from 'next/head'
 import { Typography } from '@mui/material'
 import Nav from '../components/Nav'

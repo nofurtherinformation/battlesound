@@ -6,7 +6,19 @@ const mapStyle = 'mapbox://styles/dhalpern/cl1egbfzy000614o34nfogjod'
 const MAPBOX_TOKEN =
 	'pk.eyJ1IjoiZGhhbHBlcm4iLCJhIjoiY2p3MHFvZHg2MDcyczQ4bXBjNW85aDh2OCJ9.OUluk6vAGe5BVXLOiGIoQQ'
 
-export default function Map({ layers = [], INITIAL_VIEW_STATE, controller=true }) {
+export default function Map({ 
+	layers = [], 
+	INITIAL_VIEW_STATE, 
+	controller=true,
+	viewState={
+		longitude: 30.51414,
+		latitude: 50.439188,
+		zoom: 12.5,
+		maxZoom: 22,
+		pitch: 0,
+	},
+	setViewState=()=>{}
+}) {
 	const {locale} = useLitteraMethods()
 	return (
 		<DeckGL 

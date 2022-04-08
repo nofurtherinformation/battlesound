@@ -57,25 +57,31 @@ const translations = {
 		uk_UA: 'Але наша знання про події на вулиці неповні. Тому ми повинні знайти способи, щоб дізнатися більше.'
 	},
 	Method1: {
-		en_US: 'To do this, we can position phones or webcams to stream audio of the city.',
+		en_US: 'To do this, we are working with volunteers to place mobile phones in Ukrainian cities and record street sounds. Knowing the location of each phone in the city enables us to analyze the location of detected sounds.',
 		zh_CN: '我们可以听城市，地面上的事件，和街道上的声音。',
 		ru_RU: 'Чтобы это сделать, мы можем слушать город, события на земле, и звуки, которые передвигаются по улицам.',
 		uk_UA: 'Щоб це робити, ми можемо слухати місто, події на землі, i звуки, що передвигаються по вулицях.'
 	},
 	Method2: {
-		en_US: 'We are working with volunteers to place mobile phones in Ukrainian cities and record street sounds.',
-		zh_CN: '我们与志愿者一起在基辅城市的顶部建筑上放置手机。',
-		ru_RU: 'Мы работали с волонтерами, чтобы разместить мобильные телефоны на верхних строениях в Киеве.',
-		uk_UA: 'Ми працювали з волонтерами, щоб помістити мобільні телефони на верхніх будинках в Києві.'
-	},
-	Method3: {
 		en_US: 'When shots are fired, shells hit in the city, or sirens blare, each phone hears the sound at a slightly different time.',
 		zh_CN: '当城市上的炮弹或炸弹击中时，射击被发射，或者警报响起时，每个手机都会听到不同的声音。',
 		ru_RU: 'Когда в городе попадает бомба или снаряд, выстрелы выстреляются, или будильники звенят, каждый телефон слышит этот звук с небольшим интервалом.',
 		uk_UA: 'Коли в місті попадає бомба чи снаряд, вистріли вистріляються, або будильники звенять, кожен телефон записує цей звук з невеликим інтервалом.'
 	},
-	Method4: {
+	Method3: {
 		en_US: 'By calculating the time delay, we can geolocate the source of the sound. Using machine learning, we can identify what type of sound occured.',
+		zh_CN: '通过计算延迟时间，我们可以定位声音的来源。使用机器学习，我们可以识别出声音的类型。',
+		ru_RU: 'Путем расчета времени задержки, мы можем определить источник этого звука. Используя машинное обучение, мы можем определить, что тип звука произошел.',
+		uk_UA: 'Починаючи з розрахунку часу затримки, ми можемо визначити джерело цього звуку. Використовуючи машинне обучення, ми можемо визначити, що тип звуку произошев.'
+	},
+	Method4: {
+		en_US: "As we collect data, we have tested our algorithms in St. Petersburg, Russia.",
+		zh_CN: '通过计算延迟时间，我们可以定位声音的来源。使用机器学习，我们可以识别出声音的类型。',
+		ru_RU: 'Путем расчета времени задержки, мы можем определить источник этого звука. Используя машинное обучение, мы можем определить, что тип звука произошел.',
+		uk_UA: 'Починаючи з розрахунку часу затримки, ми можемо визначити джерело цього звуку. Використовуючи машинне обучення, ми можемо визначити, що тип звуку произошев.'
+	},
+	Method5: {
+		en_US: "Read more about the technology powering this project here.",
 		zh_CN: '通过计算延迟时间，我们可以定位声音的来源。使用机器学习，我们可以识别出声音的类型。',
 		ru_RU: 'Путем расчета времени задержки, мы можем определить источник этого звука. Используя машинное обучение, мы можем определить, что тип звука произошел.',
 		uk_UA: 'Починаючи з розрахунку часу затримки, ми можемо визначити джерело цього звуку. Використовуючи машинне обучення, ми можемо визначити, що тип звуку произошев.'
@@ -361,7 +367,10 @@ export default function ExplainerTextSection({
 				border: true,
 				content: (
 					<Typography variant="h2" color="primary">
-						{translated.Method4}
+						{translated.Method4}{" "}
+						<a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" style={{textDecoration:"underline"}}>
+							{translated.Method5}
+						</a>
 					</Typography>
 				)
 			}
