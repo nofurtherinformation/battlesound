@@ -39,31 +39,31 @@ const translations = {
 		uk_UA: 'Звук'
 	},
 	SplashPage: {
-		en_US: 'The sounds of Ukraine can identify attacks, aid rescue efforts, and protect people sheltering from harm.',
+		en_US: 'The sounds of Ukraine can reveal the location of attacks, aid rescue efforts, and protect people sheltering from harm.',
 		zh_CN: '英国的音乐可以识别攻击，帮助保护流浪人的行动，并且可以提供在场的人们的安全。',
 		ru_RU: 'Звуки Украины могут определить атаки, помогать защитить прохождение обороны и людей, которые находятся в положении.',
 		uk_UA: 'Звуки України можуть визначати атаки, допомогти захисту експериментів про переселення i людей, що знаходяться в місці.'
 	},
 	Motivation1: {
-		en_US: "To aid Ukraine's citizens in the war, we need to know what happens in Ukraine's cities.",
+		en_US: "Locating and identifying attacks can start to fill in gaps of critically needed information.",
 		zh_CN: '为了帮助英国人民在战争中，我们需要知道英国城市的情况。',
 		ru_RU: 'Для помощи граждан Украины в войне, мы должны знать, что происходит в городах Украины.',
 		uk_UA: 'Для допомоги громадян України в війні, ми повинні знати, що відбувається в містах України.'
 	},
 	Motivation2: {
-		en_US: 'But our knowledge of events on the street are incomplete. So, we must find ways to learn more.',
+		en_US: 'Can we identify the locations of shooting, shelling, and related forms of artillery fire by analyzing audio collected by smartphones and public webcams?',
 		zh_CN: '但我们的街道上的事件知识不完整。所以，我们必须找到一些方法来学习更多。',
 		ru_RU: 'Но наше знание событий на улице неполное. Поэтому мы должны найти способытия, чтобы узнать больше.',
 		uk_UA: 'Але наша знання про події на вулиці неповні. Тому ми повинні знайти способи, щоб дізнатися більше.'
 	},
 	Method1: {
-		en_US: 'To do this, we can listen to the city, events on the ground, & sounds traveling through the streets.',
+		en_US: 'To do this, we can position phones or webcams to stream audio of the city.',
 		zh_CN: '我们可以听城市，地面上的事件，和街道上的声音。',
 		ru_RU: 'Чтобы это сделать, мы можем слушать город, события на земле, и звуки, которые передвигаются по улицам.',
 		uk_UA: 'Щоб це робити, ми можемо слухати місто, події на землі, i звуки, що передвигаються по вулицях.'
 	},
 	Method2: {
-		en_US: 'We worked with volunteers to place mobile phones on the top buildings in Kyiv.',
+		en_US: 'We are working with volunteers to place mobile phones in Ukrainian cities and record street sounds.',
 		zh_CN: '我们与志愿者一起在基辅城市的顶部建筑上放置手机。',
 		ru_RU: 'Мы работали с волонтерами, чтобы разместить мобильные телефоны на верхних строениях в Киеве.',
 		uk_UA: 'Ми працювали з волонтерами, щоб помістити мобільні телефони на верхніх будинках в Києві.'
@@ -120,7 +120,8 @@ const translations = {
 
 export default function ExplainerTextSection({
 	currentStepIndex,
-	onStepEnter = () => {}
+	onStepEnter = () => {},
+	onStepProgress = () => {},
 }) {
 	// sizing breakpoints
 	const sm = useMediaQuery('(max-width:768px)')
@@ -182,8 +183,8 @@ export default function ExplainerTextSection({
 						aspectRatio: '1.5'
 					},
 					md: {
-						right: '0',
-						top: '30%',
+						right: '15%',
+						top: '5%',
 						width: '40%',
 						minHeight: '300px',
 						aspectRatio: '1.5'
@@ -210,12 +211,12 @@ export default function ExplainerTextSection({
 				position: {
 					md: {
 						left: '0',
-						top: '45%',
-						width: '65%'
+						top: '10%',
+						width: '50%'
 					},
 					lg: {
 						left: '10%',
-						top: '45%',
+						top: '10%',
 						width: '50%'
 					}
 				},
@@ -225,25 +226,23 @@ export default function ExplainerTextSection({
 						{translated.Motivation1}
 					</Typography>
 				)
-			}
-		],
-		[
+			},
 			{
 				position: {
 					sm: {
 						aspectRatio: '1.5'
 					},
 					md: {
-						left: '0',
-						top: '20%',
+						left: '7.5%',
+						bottom: '0',
 						width: '40%',
 						minHeight: '300px',
 						aspectRatio: '1.5'
 					},
 					lg: {
-						left: '10%',
-						top: '20%',
-						width: '50%',
+						left: '15%',
+						bottom: '15%',
+						width: '40%',
 						minHeight: '300px',
 						aspectRatio: '1.5'
 					}
@@ -261,13 +260,13 @@ export default function ExplainerTextSection({
 			{
 				position: {
 					md: {
-						left: '50%',
-						top: '45%',
+						right: '0',
+						bottom: '0',
 						width: '50%'
 					},
 					lg: {
-						left: '50%',
-						top: '45%',
+						right: '10%',
+						bottom: '10%',
 						width: '50%'
 					}
 				},
@@ -420,7 +419,7 @@ export default function ExplainerTextSection({
 
 	return (
 		<section className={styles.scrollContainer}>
-			<Scrollama offset={.75} onStepEnter={onStepEnter}>
+			<Scrollama offset={.75} onStepEnter={onStepEnter} onStepProgress={onStepProgress}>
 				{frames.map((boxes, frameIdx) => (
 					<Step data={frameIdx} key={frameIdx}>
 						<div

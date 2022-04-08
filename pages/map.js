@@ -7,6 +7,16 @@ const Map = dynamic(() => import('../components/Map'), {
 	ssr: false
 })
 
+
+const INITIAL_VIEW_STATE = {
+	longitude: 30.54414,
+	latitude: 50.439188,
+	zoom: 10,
+	maxZoom: 22,
+	pitch: 0,
+	bearing: 0
+}
+
 export default function MapPage() {
 	return (
 		<div>
@@ -32,7 +42,7 @@ export default function MapPage() {
 					left: 0
 				}}
 			>
-				<Map />
+				<Map INITIAL_VIEW_STATE={INITIAL_VIEW_STATE} />
 			</div>
 		</div>
 	)

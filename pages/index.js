@@ -17,10 +17,9 @@ const ExplainerTextSection = dynamic(
 
 export default function Home() {
 	const [currentStepIndex, setCurrentStepIndex] = useState(null)
-  
-	const onStepEnter = ({ data }) => {
-		setCurrentStepIndex(data)
-	}
+	const [currentStepProgress, setCurrentStepProgress] = useState(null)
+	const onStepEnter = ({ data }) => setCurrentStepIndex(data)
+	const onStepProgress = ({progress}) => setCurrentStepProgress(progress.toFixed(2))
 
 	return (
 		<div>
@@ -32,8 +31,8 @@ export default function Home() {
 				/>
 			</Head>
 			<Nav page="Home" />
-			{currentStepIndex > 1 && <ExplainerMap currentStepIndex={currentStepIndex} />}
-			<ExplainerTextSection currentStepIndex={currentStepIndex} onStepEnter={onStepEnter} />
+			{currentStepIndex > 1 && <ExplainerMap currentStepIndex={currentStepIndex} currentStepProgress={currentStepProgress} />}
+			<ExplainerTextSection currentStepIndex={currentStepIndex} onStepEnter={onStepEnter} onStepProgress={onStepProgress}/>
 			<Footer />
 		</div>
 	)

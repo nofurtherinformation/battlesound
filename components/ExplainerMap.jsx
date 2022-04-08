@@ -5,11 +5,12 @@ const ExplainerMapInner = dynamic(() => import('./ExplainerMapInner'), {
 })
 
 export default function ExplainerMap({
-    currentStepIndex
+    currentStepIndex,
+    currentStepProgress
 }){
-    if (currentStepIndex < 3 && currentStepIndex < 6) {
+    if (currentStepIndex < 1 && currentStepIndex < 6) {
         return null
     } else {
-        return <ExplainerMapInner currentStepIndex={currentStepIndex} />
+        return <ExplainerMapInner currentStepIndex={currentStepIndex} currentStepProgress={currentStepProgress} />
     }
 }
