@@ -14,6 +14,12 @@ const ExplainerTextSection = dynamic(
 		ssr: false
 	}
 )
+const ExplainerVideoSection = dynamic(
+	() => import('../components/ExplainerVideoSection'),
+	{
+		ssr: false
+	}
+)
 
 export default function Home() {
 	const [currentStepIndex, setCurrentStepIndex] = useState(null)
@@ -31,7 +37,8 @@ export default function Home() {
 				/>
 			</Head>
 			<Nav page="Home" />
-			{currentStepIndex > 1 && <ExplainerMap currentStepIndex={currentStepIndex} currentStepProgress={currentStepProgress} />}
+			{currentStepIndex > 0 && <ExplainerMap currentStepIndex={currentStepIndex} currentStepProgress={currentStepProgress} />}
+			{currentStepIndex > 5 && <ExplainerVideoSection currentStepIndex={currentStepIndex} />}
 			<ExplainerTextSection currentStepIndex={currentStepIndex} onStepEnter={onStepEnter} onStepProgress={onStepProgress}/>
 			<Footer />
 		</div>

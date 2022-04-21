@@ -81,6 +81,18 @@ const translations = {
 		uk_UA: 'Починаючи з розрахунку часу затримки, ми можемо визначити джерело цього звуку. Використовуючи машинне обучення, ми можемо визначити, що тип звуку произошев.'
 	},
 	Method5: {
+		en_US: "Every day at noon, an artillery canon fires a shot from Naryshkin Bastion, a Russian military base in the city of St. Petersburg."
+	},
+	Method6: {
+		en_US: "Several webcam streams from known locations record the daily ordinance display..."
+	},
+	Method7: {
+		en_US: "...and we can we measure how long it takes the sound to reach each location."
+	},
+	Method8: {
+		en_US: "Each camera has a known location, and calculating the delay between the firing time and the audio recording allows us to calibrate our model to detect locations."
+	},
+	Method9: {
 		en_US: "Read more about the technology powering this project here.",
 		zh_CN: '通过计算延迟时间，我们可以定位声音的来源。使用机器学习，我们可以识别出声音的类型。',
 		ru_RU: 'Путем расчета времени задержки, мы можем определить источник этого звука. Используя машинное обучение, мы можем определить, что тип звука произошел.',
@@ -183,86 +195,87 @@ export default function ExplainerTextSection({
 			}
 		],
 		[
-			{
-				position: {
-					sm: {
-						aspectRatio: '1.5'
-					},
-					md: {
-						right: '15%',
-						top: '5%',
-						width: '40%',
-						minHeight: '300px',
-						aspectRatio: '1.5'
-					},
-					lg: {
-						right: '10%',
-						top: '30%',
-						width: '50%',
-						minHeight: '300px',
-						aspectRatio: '1.5'
-					}
-				},
-				border: false,
-				padding: 0,
-				content: (
-					<Image
-						src={'/img/AP22072771666802.jpeg'}
-						layout="fill"
-						alt="Alt text here"
-					/>
-				)
-			},
-			{
-				position: {
-					md: {
-						left: '0',
-						top: '10%',
-						width: '50%'
-					},
-					lg: {
-						left: '10%',
-						top: '10%',
-						width: '50%'
-					}
-				},
-				border: true,
-				content: (
-					<Typography variant="h2" color="primary">
-						{translated.Motivation1}
-					</Typography>
-				)
-			},
-			{
-				position: {
-					sm: {
-						aspectRatio: '1.5'
-					},
-					md: {
-						left: '7.5%',
-						bottom: '0',
-						width: '40%',
-						minHeight: '300px',
-						aspectRatio: '1.5'
-					},
-					lg: {
-						left: '15%',
-						bottom: '15%',
-						width: '40%',
-						minHeight: '300px',
-						aspectRatio: '1.5'
-					}
-				},
-				border: false,
-				padding: 0,
-				content: (
-					<Image
-						src={'/img/AP22060795547794.jpeg'}
-						layout="fill"
-						alt="Alt text here"
-					/>
-				)
-			},
+			// {
+			// 	position: {
+			// 		sm: {
+			// 			aspectRatio: '1.5'
+			// 		},
+			// 		md: {
+			// 			left: '15%',
+			// 			top: '5%',
+			// 			width: '40%',
+			// 			minHeight: '300px',
+			// 			aspectRatio: '1.5'
+			// 		},
+			// 		lg: {
+			// 			left: '10%',
+			// 			top: '30%',
+			// 			width: '50%',
+			// 			minHeight: '300px',
+			// 			aspectRatio: '1.5'
+			// 		}
+			// 	},
+			// 	border: false,
+			// 	padding: 0,
+			// 	content: (
+			// 		<Image
+			// 			src={'/img/AP22072771666802.jpeg'}
+			// 			layout="fill"
+			// 			alt="Alt text here"
+			// 		/>
+			// 	)
+			// },
+			
+			// {
+			// 	position: {
+			// 		md: {
+			// 			left: '0',
+			// 			top: '10%',
+			// 			width: '50%'
+			// 		},
+			// 		lg: {
+			// 			left: '10%',
+			// 			top: '10%',
+			// 			width: '50%'
+			// 		}
+			// 	}, 
+			// 	border: true,
+			// 	content: (
+			// 		<Typography variant="h2" color="primary">
+			// 			{translated.Motivation1}
+			// 		</Typography>
+			// 	)
+			// },
+			// {
+			// 	position: {
+			// 		sm: {
+			// 			aspectRatio: '1.5'
+			// 		},
+			// 		md: {
+			// 			left: '7.5%',
+			// 			bottom: '0',
+			// 			width: '40%',
+			// 			minHeight: '300px',
+			// 			aspectRatio: '1.5'
+			// 		},
+			// 		lg: {
+			// 			left: '15%',
+			// 			bottom: '15%',
+			// 			width: '40%',
+			// 			minHeight: '300px',
+			// 			aspectRatio: '1.5'
+			// 		}
+			// 	},
+			// 	border: false,
+			// 	padding: 0,
+			// 	content: (
+			// 		<Image
+			// 			src={'/img/AP22060795547794.jpeg'}
+			// 			layout="fill"
+			// 			alt="Alt text here"
+			// 		/>
+			// 	)
+			// },
 			{
 				position: {
 					md: {
@@ -271,8 +284,8 @@ export default function ExplainerTextSection({
 						width: '50%'
 					},
 					lg: {
-						right: '10%',
-						bottom: '10%',
+						left: '25%',
+						top: '10%',
 						width: '50%'
 					}
 				},
@@ -368,9 +381,94 @@ export default function ExplainerTextSection({
 				content: (
 					<Typography variant="h2" color="primary">
 						{translated.Method4}{" "}
-						<a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" style={{textDecoration:"underline"}}>
-							{translated.Method5}
-						</a>
+					</Typography>
+				)
+			}
+		],
+		[
+			{
+				position: {
+					md: {
+						left: '0',
+						top: '10%',
+						width: '50%'
+					},
+					lg: {
+						left: '10%',
+						top: '15%',
+						width: '50%'
+					}
+				},
+				border: true,
+				content: (
+					<Typography variant="h2" color="primary">
+						{translated.Method5}{" "}
+					</Typography>
+				)
+			}
+		],
+		[
+			{
+				position: {
+					md: {
+						left: '0',
+						top: '10%',
+						width: '50%'
+					},
+					lg: {
+						left: '10%',
+						top: '15%',
+						width: '50%'
+					}
+				},
+				border: true,
+				content: (
+					<Typography variant="h2" color="primary">
+						{translated.Method6}{" "}
+					</Typography>
+				)
+			}
+		],
+		[
+			{
+				position: {
+					md: {
+						left: '0',
+						top: '10%',
+						width: '50%'
+					},
+					lg: {
+						left: '10%',
+						top: '15%',
+						width: '50%'
+					}
+				},
+				border: true,
+				content: (
+					<Typography variant="h2" color="primary">
+						{translated.Method7}{" "}
+					</Typography>
+				)
+			}
+		],
+		[
+			{
+				position: {
+					md: {
+						left: '0',
+						top: '10%',
+						width: '50%'
+					},
+					lg: {
+						left: '10%',
+						top: '15%',
+						width: '50%'
+					}
+				},
+				border: true,
+				content: (
+					<Typography variant="h2" color="primary">
+						{translated.Method8}{" "}
 					</Typography>
 				)
 			}

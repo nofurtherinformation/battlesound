@@ -62,32 +62,44 @@ export default function ExplainerMapInner({
 	baseStep
 }) {
 	const [highlight, setHighlight] = useState(false)
-	const [initialViewState, setInitialViewState] = useState(INITIAL_VIEW_STATE)
+	const [viewState, setViewState] = useState(INITIAL_VIEW_STATE)
 	const { locale } = useLitteraMethods()
 
-	const goToNYC = useCallback(() => {
-		setInitialViewState(prev => ({
+	const goToNYC = () => {
+		setViewState(prev => ({
             ...prev,
-			longitude: -74.1,
-			latitude: 40.7,
-			zoom: 14,
-			pitch: 0,
+			longitude: 30.319,
+			latitude: 59.947,
+			zoom: 15.5,
+			pitch: 60,
 			bearing: 0,
-			transitionDuration: 8000,
+			transitionDuration: 1000,
 			transitionInterpolator: new FlyToInterpolator()
 		}))
-	}, [])
+	}
 
-	const goToKyiv = useCallback(() => {
-		setInitialViewState((prev) => ({
+	const goToKyiv = () => {
+		setViewState((prev) => ({
 			...prev,
 			...INITIAL_VIEW_STATE,
 			pitch: 0,
 			bearing: 0,
-			transitionDuration: 8000,
-			transitionInterpolator: new FlyToInterpolator()
+			transitionDuration: 1000,
+			transitionInterpolator: new FlyToInterpolator(),
 		}))
-	}, [])
+	}
+
+	const rotateCamera = () => {
+		setViewState((prev) => ({
+			...prev,
+			bearing: (prev.bearing + 90) % 360,
+			transitionDuration: 5000,
+			transitionInterpolator: new FlyToInterpolator({speed: 2})
+		}))
+	}
+	// useEffect(() => {
+	// 	rotateCamera()
+	// },[currentStepIndex])
 
 	useEffect(() => {
 		const interval = setInterval(() => {
@@ -215,8 +227,83 @@ export default function ExplainerMapInner({
 			transitions: {
 				getColor: 750
 			}
-		})
+		}),
+
+		new LineLayer({
+			data: [
+				[30.3175159,59.9483564]
+			],
+			id: 'cannon-indicator',
+			getWidth: 2,
+			getSourcePosition: (d) => [...d,0],
+			getTargetPosition: (d) => [...d,250],
+			getColor: (d) => [230, 120, 0],
+			visible: currentStepIndex > baseStep + 3
+		}),
+
+		new ScatterplotLayer({
+			data: [
+				[30.3175159,59.9483564]
+			],
+			id: 'canon backgrounds',
+			pickable: false,
+			opacity: 1,
+			stroked: true,
+			filled: true,
+			radiusScale: 6,
+			lineWidthMinPixels: 2,
+			getPosition: (d) => [...d, 250],
+			getRadius: (d) => 10,
+			billboard:true,
+			getLineColor: (d) => [230, 120, 0, 255],
+			getFillColor: (d) => [230, 120, 0],
+			visible: currentStepIndex > baseStep + 3,
+		}),
+		
+		new IconLayer({
+			data: [
+				[30.3175159,59.9483564]
+			],
+			id: 'cannon',
+			getPosition: (d) => [...d, 250],
+			getSize: (d) => 10,
+			getColor: (d) => [0,0,0],
+			iconAtlas: '/img/noun-artillery-3864271-FFFFFF.png',
+			iconMapping: ICON_MAPPING,
+			getIcon: (d) => 'marker',
+			sizeScale: 8,
+			pickable: false,
+			visible: currentStepIndex > baseStep + 3,
+		}),
+		
+
+		new LineLayer({
+			data: [[30.3127857,59.9538167],[30.3255866,59.9430683],[30.2942732,59.9423764],[30.3195132,59.9429748]],
+			id: 'cannon-indicator',
+			getWidth: 2,
+			getSourcePosition: (d) => [30.3175159,59.9483564],
+			getTargetPosition: (d) => d,
+			getColor: (d) => [230, 120, 0],
+			visible: currentStepIndex > baseStep + 5
+		}),
+		new ScatterplotLayer({
+			data: [[30.3127857,59.9538167],[30.3255866,59.9430683],[30.2942732,59.9423764],[30.3195132,59.9429748]],
+			id: 'canon backgrounds',
+			pickable: false,
+			opacity: 1,
+			stroked: true,
+			filled: true,
+			radiusScale: 6,
+			lineWidthMinPixels: 2,
+			getPosition: (d) => d,
+			getRadius: (d) => 2,
+			billboard:true,
+			getLineColor: (d) => [230, 120, 0, 255],
+			getFillColor: (d) => [230, 120, 0],
+			visible: currentStepIndex > baseStep + 6,
+		}),
 	]
+	
 	return (
 		<div
 			style={{
@@ -227,14 +314,14 @@ export default function ExplainerMapInner({
 				zIndex: 0,
 				opacity:
 					currentStepIndex > baseStep - 2 &&
-					currentStepIndex < baseStep + 4
+					currentStepIndex < baseStep + 8
 						? 1
 						: 0,
 				transition: '250ms all'
 			}}
 		>
 			<DeckGL
-				initialViewState={initialViewState}
+				viewState={viewState}
 				controller={false}
 				layers={layers}
 			>
