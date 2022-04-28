@@ -14,7 +14,8 @@ export default function ExplainerVideoSection({
         } else {
             vids.forEach(vid => vid.current.pause())
         }
-    },[currentStepIndex])
+    },[currentStepIndex])//eslint-disable-line
+    
     return <div style={{
         position:'fixed',
         width:'100%',

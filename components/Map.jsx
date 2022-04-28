@@ -2,7 +2,7 @@ import DeckGL from '@deck.gl/react'
 import MapGL from 'react-map-gl'
 import { useLitteraMethods } from '@assembless/react-littera'
 
-const mapStyle = 'mapbox://styles/dhalpern/cl1egbfzy000614o34nfogjod'
+const mapStyle = 'mapbox://styles/dhalpern/cl2ih86m6000414lt3r30nf6h'
 const MAPBOX_TOKEN =
 	'pk.eyJ1IjoiZGhhbHBlcm4iLCJhIjoiY2p3MHFvZHg2MDcyczQ4bXBjNW85aDh2OCJ9.OUluk6vAGe5BVXLOiGIoQQ'
 

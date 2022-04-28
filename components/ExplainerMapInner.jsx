@@ -114,7 +114,7 @@ export default function ExplainerMapInner({
 		} else if (currentStepIndex === baseStep + 2) {
 			goToKyiv()
 		}
-	}, [currentStepIndex])
+	}, [currentStepIndex]) //eslint-disable-line
 
 	const layers = [
 		new ScatterplotLayer({
