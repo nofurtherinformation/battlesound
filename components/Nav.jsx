@@ -4,8 +4,14 @@ import { Link, Box, Button, ButtonGroup } from '@mui/material'
 import useLocalStorage from '../hooks/useLocalStorage'
 
 const translations = {
-	Home: {
-		en_US: 'Home',
+	Map: {
+		en_US: 'Map',
+		zh_CN: '地图',
+		ru_RU: 'Карта',
+		uk_UA: 'Карта'
+	},
+	Methods: {
+		en_US: 'Methods',
 		zh_CN: '首页',
 		ru_RU: 'Главная',
 		uk_UA: 'Головна'
@@ -16,28 +22,22 @@ const translations = {
 		ru_RU: 'О нас',
 		uk_UA: 'Про нас'
 	},
-	Map: {
-		en_US: 'Map',
-		zh_CN: '地图',
-		ru_RU: 'Карта',
-		uk_UA: 'Карта'
-	},
-	Login: {
-		en_US: 'Login',
-		zh_CN: '登录',
-		ru_RU: 'Вход',
-		uk_UA: 'Вхід'
-	}
+	// Login: {
+	// 	en_US: 'Login',
+	// 	zh_CN: '登录',
+	// 	ru_RU: 'Вход',
+	// 	uk_UA: 'Вхід'
+	// }
 }
 
 const links = [
 	{
 		href: '/',
-		text: 'Home'
+		text: 'Map'
 	},
 	{
-		href: '/map',
-		text: 'Map'
+		href: '/methods',
+		text: 'Methods'
 	},
 	{
 		href: '/login',

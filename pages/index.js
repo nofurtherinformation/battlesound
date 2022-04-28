@@ -1,46 +1,50 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import Head from 'next/head'
-import Image from 'next/image'
-import dynamic from 'next/dynamic'
-import styles from '../styles/Home.module.css'
-import { Container, Box, Typography } from '@mui/material'
+import { Typography } from '@mui/material'
 import Nav from '../components/Nav'
-import Footer from '../components/Footer'
-import ExplainerMap from '../components/ExplainerMap'
+import dynamic from 'next/dynamic'
 
-const ExplainerTextSection = dynamic(
-	() => import('../components/ExplainerTextSection'),
-	{
-		ssr: false
-	}
-)
-const ExplainerVideoSection = dynamic(
-	() => import('../components/ExplainerVideoSection'),
-	{
-		ssr: false
-	}
-)
+const Map = dynamic(() => import('../components/Map'), {
+	ssr: false
+})
 
-export default function Home() {
-	const [currentStepIndex, setCurrentStepIndex] = useState(null)
-	const [currentStepProgress, setCurrentStepProgress] = useState(null)
-	const onStepEnter = ({ data }) => setCurrentStepIndex(data)
-	const onStepProgress = ({progress}) => setCurrentStepProgress(progress.toFixed(2))
 
+const INITIAL_VIEW_STATE = {
+	longitude: 30.54414,
+	latitude: 50.439188,
+	zoom: 10,
+	maxZoom: 22,
+	pitch: 0,
+	bearing: 0
+}
+
+export default function MapPage() {
 	return (
 		<div>
 			<Head>
-				<title>BattleSound</title>
+				<title>Map :: BattleSound</title>
 				<meta
 					name="description"
 					content="How can sound protect Ukraine's people from attack?"
 				/>
 			</Head>
-			<Nav page="Home" />
-			{currentStepIndex > 0 && <ExplainerMap currentStepIndex={currentStepIndex} currentStepProgress={currentStepProgress} />}
-			{currentStepIndex > 5 && <ExplainerVideoSection currentStepIndex={currentStepIndex} />}
-			<ExplainerTextSection currentStepIndex={currentStepIndex} onStepEnter={onStepEnter} onStepProgress={onStepProgress}/>
-			<Footer />
+			<Nav page="Map" />
+			<div style={{ position: 'absolute', left: 0, top: 0, zIndex: 1 }}>
+				<Typography variant="h2" color="primary" fontWeight={"bold"}>
+					BattleSound
+				</Typography>
+			</div>
+			<div
+				style={{
+					position: 'absolute',
+					width: '100%',
+					height: '100%',
+					top: 0,
+					left: 0
+				}}
+			>
+				<Map INITIAL_VIEW_STATE={INITIAL_VIEW_STATE} />
+			</div>
 		</div>
 	)
 }
