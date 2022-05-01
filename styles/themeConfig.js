@@ -22,7 +22,7 @@ export const themeOptions = {
       divider: 'rgba(249,249,249,0.12)',
     },
     typography: {
-      fontFamily: "'Anonymous Pro', Gill sans, sans-serif",
+      fontFamily: "'Jost', sans-serif",
       h1: {
         fontSize: '8rem',
         color: 'primary',
@@ -40,7 +40,7 @@ export const themeOptions = {
                 root: {
                     color: 'primary',
                     textTransform: 'uppercase',
-                    fontFamily: "'Anonymous Pro', Gill sans, sans-serif",
+                    fontFamily: "'Jost', sans-serif",
                     fontWeight: 'bold',
                 },
                 '&:hover': {
