@@ -304,24 +304,43 @@ export default function EventMap({
 					<Grid item xs={6} md={3}>
 						<Grid container spacing={1}>
 							<Grid item xs={12} sx={{ display: 'flex' }}>
-								<Box
-									sx={{
-										width: '20px',
-										display: 'inline-block',
-										marginRight: '5px'
-									}}
-								>
-									{/* filter via https://codepen.io/sosuke/pen/Pjoqqp */}
-									<Image
-										src="/img/shelling-icon.png"
-										alt="Icons on the map representing different events"
-										width="20px"
-										height="20px"
-									/>
-								</Box>
-								<Typography sx={{ display: 'inline-block' }}>
-									Detected Shelling
-								</Typography>
+								<Grid container spacing={1}>
+									{Object.entries(ICON_MAPPING).map(
+										([key, _value]) => (
+											<Grid
+												item
+												xs={4}
+												key={key}
+												alignItems="flex-start"
+												display="flex"
+											>
+												<Box
+													sx={{
+														width: '20px',
+														display: 'inline-block',
+														marginRight: '5px'
+													}}
+												>
+													<Image
+														src={`/img/${key}.png`}
+														alt="Icons on the map representing different events"
+														width="20px"
+														height="20px"
+													/>
+												</Box>
+												<Typography
+													sx={{
+														display: 'inline-block',
+														textTransform:
+															'lowercase'
+													}}
+												>
+													{key}
+												</Typography>
+											</Grid>
+										)
+									)}
+								</Grid>
 							</Grid>
 							<Grid item xs={12} sx={{ display: 'flex' }}>
 								<Box
@@ -428,8 +447,9 @@ const MethodModalShort = ({ open, handleClose }) => {
 					<Typography variant="h5" element="h1" color="primary">
 						Methods and Technology
 					</Typography>
-					<br/><br/>
-					<Typography sx={{maxWidth:'60ch'}}>
+					<br />
+					<br />
+					<Typography sx={{ maxWidth: '60ch' }}>
 						Lorem ipsum dolor sit amet, consectetur adipiscing elit,
 						sed do eiusmod tempor incididunt ut labore et dolore
 						magna aliqua. Et malesuada fames ac turpis. Tincidunt
@@ -513,7 +533,7 @@ const TimelineInner = ({ width, height, data, setCurrentObject }) => {
 			}),
 		[width, data.length],
 		[] // eslint-disable-line react-hooks/exhaustive-deps
-	) 
+	)
 
 	return (
 		<svg width={width} height={height}>
