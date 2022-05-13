@@ -3,11 +3,27 @@ import { Box, Icon, Typography } from '@mui/material'
 import Nav from '../components/Nav'
 import dynamic from 'next/dynamic'
 import EventMap from '../components/EventMap'
+import { ViewportProvider } from '../contexts/Viewport'
+
+const INITIAL_VIEW_STATE = {
+	longitude: 30.54414,
+	latitude: 50.439188,
+	zoom: 10,
+	maxZoom: 22,
+	pitch: 0,
+	bearing: 0
+}
 
 export default function MapPage() {
-
 	return (
-		<Box sx={{width:'100%', height:'100%', overflow:'hidden', position:'absolute'}}>
+		<Box
+			sx={{
+				width: '100%',
+				height: '100%',
+				overflow: 'hidden',
+				position: 'absolute'
+			}}
+		>
 			<Head>
 				<title>Map :: BattleSound</title>
 				<meta
@@ -25,7 +41,9 @@ export default function MapPage() {
 					left: 0
 				}}
 			>
-				<EventMap />
+				<ViewportProvider defaultViewport={INITIAL_VIEW_STATE}>
+					<EventMap />
+				</ViewportProvider>
 			</div>
 		</Box>
 	)

@@ -1,7 +1,7 @@
 import { useState, useRef, useCallback, useEffect, useMemo } from 'react'
 // MAP
 import DeckGL from '@deck.gl/react'
-import ReactMapGl from 'react-map-gl'
+import ReactMapGl, { Marker, NavigationControl } from 'react-map-gl'
 import { MapboxLayer } from '@deck.gl/mapbox'
 import { IconLayer, ScatterplotLayer, TextLayer } from '@deck.gl/layers'
 import Papa from 'papaparse'
@@ -14,10 +14,12 @@ import { scaleTime, scaleLinear } from '@visx/scale'
 
 import 'mapbox-gl/dist/mapbox-gl.css'
 import { Axis } from '@visx/axis'
+import Stack from '@mui/material/Stack'
 import Image from 'next/image'
 import { ParentSize } from '@visx/responsive'
 import { Text } from '@visx/text'
 import Link from 'next/link'
+import { useSetViewport, useViewport } from '../contexts/Viewport'
 const mapStyle = 'mapbox://styles/dhalpern/cl2ih86m6000414lt3r30nf6h'
 const MAPBOX_TOKEN =
 	'pk.eyJ1IjoiZGhhbHBlcm4iLCJhIjoiY2p3MHFvZHg2MDcyczQ4bXBjNW85aDh2OCJ9.OUluk6vAGe5BVXLOiGIoQQ'
@@ -73,16 +75,7 @@ const PATTERN_MAPPING = {
 	}
 }
 
-export default function EventMap({
-	controller = true,
-	viewState = {
-		longitude: 30.51414,
-		latitude: 50.439188,
-		zoom: 12.5,
-		maxZoom: 22,
-		pitch: 0
-	}
-}) {
+export default function EventMap({ controller = true }) {
 	const [data, setData] = useState([])
 	const [currentObject, setCurrentObject] = useState({})
 	const [modalOpen, setModalOpen] = useState(false)
@@ -90,7 +83,6 @@ export default function EventMap({
 	const handleLoadData = (data) => {
 		setData(data.data.map((f, id) => ({ ...f, id })))
 	}
-
 	const handleMapHover = ({ x, y, object }) => {
 		if (object) {
 			setCurrentObject({
@@ -102,6 +94,8 @@ export default function EventMap({
 			setCurrentObject({})
 		}
 	}
+	const viewport = useViewport()
+	const setViewport = useSetViewport()
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -206,10 +200,16 @@ export default function EventMap({
 			getSize: 1.5,
 			onHover: handleMapHover,
 			iconAtlas: '/img/map_icons.png',
-			getColor: (d) => [255, 60, 60],
+			getColor: (d) => !currentObject?.id || currentObject.id === d.id ? [255, 60, 60] : [60,60,60],
 			iconMapping: ICON_MAPPING,
 			getIcon: (d) => d.type,
-			sizeScale: 8
+			sizeScale: 8,
+			updateTriggers: {
+				getColor: [currentObject?.id]
+			},
+			transitions: {
+				getColor: 250
+			}
 		})
 	]
 
@@ -221,128 +221,219 @@ export default function EventMap({
 			map.addLayer(new MapboxLayer({ id, deck }), 'road-label-simple')
 		})
 	}, []) //eslint-disable-line react-hooks/exhaustive-deps
-
+	console.log(currentObject)
 	return (
 		<>
-			<DeckGL
-				initialViewState={INITIAL_VIEW_STATE}
-				controller={controller}
-				layers={layers}
-				pickingRadius={20}
-				// ref={deckRef}
-				// onWebGLInitialized={setGLContext}
-			>
-				<ReactMapGl
-					locale={locale}
-					mapboxAccessToken={MAPBOX_TOKEN}
-					reuseMaps
-					mapStyle={mapStyle}
-					preventStyleDiffing={true}
-					// ref={mapRef}
-					// gl={glContext}
-					// onLoad={() => {
-					// 	onMapLoad()
-					// }}
-				></ReactMapGl>
-			</DeckGL>
-
-			{currentObject?.id !== undefined && (
+			<Stack spacing={0} sx={{ height: '100vh' }}>
 				<Box
 					sx={{
-						position: 'absolute',
 						background: '#192432',
 						padding: '1em',
-						border: '2px solid white',
-						left: currentObject.screenX,
-						top: currentObject.screenY,
-						zIndex: 5000,
-						pointerEvents: 'none'
+						color: 'white',
+						boxShadow: '0px 0px 10px rgba(0,0,0,0.9)'
 					}}
 				>
-					<Typography sx={{ lineHeight: 1 }} color="primary">
-						<b>Detected Event:</b>{' '}
-						{currentObject.type.toLowerCase()}
-						<br />
-						<b>Timestamp:</b>{' '}
-						{currentObject.time.toLocaleDateString()}
-						<br />
-						<b>Confidence Radius:</b>{' '}
-						{Math.round(currentObject.radius)}m <br />
-						<b>Estimated Location:</b>
-						<br />
-						{Math.round(currentObject.x * 100000) / 100000},
-						{Math.round(currentObject.y * 100000) / 100000}
-					</Typography>
-				</Box>
-			)}
-			<Box
-				sx={{
-					position: 'absolute',
-					left: '50%',
-					top: 0,
-					transform: 'translateX(-50%)',
-					width: 'clamp(25vw, 1200px, 100vw)',
-					background: '#192432',
-					padding: '1em',
-					color: 'white',
-					border: '2px solid white',
-					borderTop: 'none'
-				}}
-			>
-				<Grid container spacing={1}>
-					<Grid item xs={6} md={2} sx={{ marginTop: '-5px' }}>
-						<Typography
-							variant="h5"
-							element="h1"
-							color="primary"
-							fontWeight="bold"
-						>
-							BattleSound
-						</Typography>
-						<Typography>EN | RU | UA</Typography>
+					<Grid container spacing={1}>
+						<Grid item xs={6} md={8} sx={{ marginTop: '-5px' }}>
+							<Typography
+								variant="h5"
+								element="h1"
+								color="primary"
+								fontWeight="bold"
+							>
+								BattleSound
+							</Typography>
+							<Typography>EN | RU | UA</Typography>
+						</Grid>
+						<Grid item xs={6} md={4}>
+							<Box>
+								<Link href="/methods">
+									<a
+										style={{
+											padding: '2px 10px',
+											background: 'white',
+											color: 'black',
+											borderRadius: '0',
+											margin: '10px 0 0 5px',
+											textTransform: 'uppercase',
+											fontFamily: "'Jost', sans-serif",
+											fontSize: '.875rem',
+											transform: 'translateY(5px)'
+										}}
+									>
+										Narrative
+									</a>
+								</Link>
+							</Box>
+						</Grid>
 					</Grid>
-					<Grid item xs={6} md={3}>
-						<Grid container spacing={1}>
-							<Grid item xs={12} sx={{ display: 'flex' }}>
-								<Grid container spacing={1}>
-									{Object.entries(ICON_MAPPING).map(
-										([key, _value]) => (
-											<Grid
-												item
-												xs={4}
-												key={key}
-												alignItems="flex-start"
-												display="flex"
-											>
-												<Box
-													sx={{
-														width: '20px',
-														display: 'inline-block',
-														marginRight: '5px'
-													}}
-												>
-													<Image
-														src={`/img/${key}.png`}
-														alt="Icons on the map representing different events"
-														width="20px"
-														height="20px"
-													/>
-												</Box>
-												<Typography
-													sx={{
-														display: 'inline-block',
-														textTransform:
-															'lowercase'
-													}}
-												>
-													{key}
-												</Typography>
-											</Grid>
-										)
-									)}
-								</Grid>
-							</Grid>
-							<Grid item xs={12} sx={{ display: 'flex' }}>
+				</Box>
+				<Box
+					flexGrow={1}
+					sx={{ position: 'relative', minHeight: 400, width: '100%' }}
+				>
+					<DeckGL
+						viewState={viewport}
+						onViewStateChange={({ viewState: newViewState }) =>
+							setViewport(newViewState)
+						}
+						intertia={0}
+						controller={{
+							intertia: true
+						}}
+						layers={layers}
+						pickingRadius={20}
+					>
+						<ReactMapGl
+							locale={locale}
+							mapboxAccessToken={MAPBOX_TOKEN}
+							reuseMaps
+							mapStyle={mapStyle}
+							preventStyleDiffing={true}
+						>
+							{data.map((row, idx) => (
+								<Marker
+									latitude={row.y}
+									longitude={row.x}
+									anchor="bottom"
+									offset={[0, -40]}
+									key={'marker-' + idx}
+									style={{
+										display: 
+											viewport.zoom > 11.5 || currentObject.id === row.id  ? 'initial' : 'none'
+									}}
+								>
+									<Box
+										sx={{
+											padding: '.5em',
+											boxShadow: '0px 0px 10px rgba(0,0,0,0.9)',
+											background: '#192432',
+											pointerEvents: 'none',
+											zIndex: 500000,
+										}}
+									>
+										<Typography
+											sx={{ lineHeight: 1 }}
+											color="primary"
+										>
+											<b>{row.type.toLowerCase()}</b>{' '}
+											
+											<br />
+											{row.time.toLocaleDateString()}
+											<br />
+											<br />
+											{Math.round(
+												row.x * 100000
+											) / 100000}
+											,
+											{Math.round(
+												row.y * 100000
+											) / 100000}
+											<br/>
+<b>Confidence Radius:</b>{' '}
+											{Math.round(row.radius)}m{' '}
+										</Typography>
+									</Box>
+								</Marker>
+							))}
+						</ReactMapGl>
+					</DeckGL>
+					<Stack
+						sx={{
+							position: 'absolute',
+							bottom: '2em',
+							right: '.5em'
+						}}
+					>
+						<Button
+							sx={{
+								color: 'white',
+								background: '#192432',
+								width: '3em',
+								height: '3em',
+								minWidth: '3em',
+								marginBottom: '.5em',
+								fontSize: '1rem',
+								padding: 0,
+								fontWeight: 'bold'
+							}}
+							onClick={() =>
+								setViewport((p) => ({ ...p, zoom: p.zoom + 1 }))
+							}
+						>
+							+
+						</Button>
+						<Button
+							sx={{
+								color: 'white',
+								background: '#192432',
+								width: '3em',
+								height: '3em',
+								minWidth: '3em',
+								fontSize: '1rem',
+								padding: 0,
+								fontWeight: 'bold'
+							}}
+							onClick={() =>
+								setViewport((p) => ({ ...p, zoom: p.zoom - 1 }))
+							}
+						>
+							–
+						</Button>
+					</Stack>
+				</Box>
+				<Grid
+					container
+					spacing={1}
+					sx={{
+						background: '#192432',
+						padding: '2em 1em 1em 1em',
+						color: 'white',
+						boxShadow: '0px -10px 10px rgba(0,0,0,0.9)'
+					}}
+				>
+					<Grid item xs={12} md={4}>
+						Audio viz
+					</Grid>
+					<Grid item xs={12} md={4}>
+						<Timeline
+							data={data}
+							setCurrentObject={setCurrentObject}
+						/>
+					</Grid>
+
+					<Grid item xs={12} md={4}>
+						<Stack>
+							{Object.entries(ICON_MAPPING).map(
+								([key, _value]) => (
+									<Box alignItems="flex-start" display="flex">
+										<Box
+											sx={{
+												width: '20px',
+												display: 'inline-block',
+												marginRight: '5px'
+											}}
+										>
+											<Image
+												src={`/img/${key}.png`}
+												alt="Icons on the map representing different events"
+												width="20px"
+												height="20px"
+											/>
+										</Box>
+										<Typography
+											sx={{
+												display: 'inline-block',
+												textTransform: 'lowercase'
+											}}
+										>
+											{key}
+										</Typography>
+									</Box>
+								)
+							)}
+
+							<Box sx={{ display: 'flex' }}>
 								<Box
 									sx={{
 										width: '20px',
@@ -361,52 +452,29 @@ export default function EventMap({
 								<Typography sx={{ display: 'inline-block' }}>
 									Confidence Radius
 								</Typography>
-							</Grid>
-						</Grid>
-					</Grid>
-					<Grid item xs={12} md={5}>
-						<Timeline
-							data={data}
-							setCurrentObject={setCurrentObject}
-						/>
-					</Grid>
-					<Grid item xs={12} md={2}>
-						<Button
-							variant="text"
-							onClick={handleToggleModal}
-							sx={{
-								margin: 0,
-								padding: '0 10px',
-								background: 'white',
-								color: 'black',
-								borderRadius: '0',
-								marginLeft: '5px'
-							}}
-						>
-							Methods &amp; About
-						</Button>
-						<br />
-						<br />
-						<Link href="/methods">
-							<a
-								style={{
-									padding: '2px 10px',
-									background: 'white',
-									color: 'black',
-									borderRadius: '0',
-									margin: '10px 0 0 5px',
-									textTransform: 'uppercase',
-									fontFamily: "'Jost', sans-serif",
-									fontSize: '.875rem',
-									transform: 'translateY(5px)'
-								}}
-							>
-								Narrative
-							</a>
-						</Link>
+							</Box>
+						</Stack>
 					</Grid>
 				</Grid>
-			</Box>
+			</Stack>
+			<Button
+				variant="text"
+				onClick={handleToggleModal}
+				sx={{
+					margin: 0,
+					padding: '0 10px',
+					background: 'white',
+					color: 'black',
+					borderRadius: '0',
+					marginLeft: '5px',
+					position: 'absolute',
+					right: 0,
+					top: '50%',
+					transform: 'translate(40%, -50%) rotate(90deg)'
+				}}
+			>
+				Methods &amp; About
+			</Button>
 			<MethodModalShort
 				open={modalOpen}
 				handleClose={handleToggleModal}
