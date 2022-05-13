@@ -241,7 +241,7 @@ export default function EventMap({ controller = true }) {
 								color="primary"
 								fontWeight="bold"
 							>
-								BattleSound
+								Sounds of Ukraine
 							</Typography>
 							<Typography>EN | RU | UA</Typography>
 						</Grid>
@@ -406,7 +406,7 @@ export default function EventMap({ controller = true }) {
 						<Stack>
 							{Object.entries(ICON_MAPPING).map(
 								([key, _value]) => (
-									<Box alignItems="flex-start" display="flex">
+									<Box alignItems="flex-start" display="flex" key={key}>
 										<Box
 											sx={{
 												width: '20px',
@@ -599,7 +599,7 @@ const TimelineInner = ({ width, height, data, setCurrentObject }) => {
 				range: [0, width - margin.left - margin.right],
 				domain: extent(data, getDate)
 			}),
-		[width, data.length],
+		[width, data.length], // eslint-disable-next-line react-hooks/exhaustive-deps
 		[] // eslint-disable-line react-hooks/exhaustive-deps
 	)
 
