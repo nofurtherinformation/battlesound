@@ -30,7 +30,7 @@ export default function Home() {
 	return (
 		<div>
 			<Head>
-				<title>BattleSound</title>
+				<title>Sounds of Ukraine</title>
 				<meta
 					name="description"
 					content="How can sound protect Ukraine's people from attack?"

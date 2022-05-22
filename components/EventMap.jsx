@@ -1,6 +1,6 @@
 import { useState, useRef, useCallback, useEffect, useMemo } from 'react'
 // MAP
-import DeckGL from '@deck.gl/react'
+import DeckGL, { FlyToInterpolator } from '@deck.gl/react'
 import ReactMapGl, { Marker, NavigationControl } from 'react-map-gl'
 import { MapboxLayer } from '@deck.gl/mapbox'
 import { IconLayer, ScatterplotLayer, TextLayer } from '@deck.gl/layers'
@@ -8,13 +8,23 @@ import Papa from 'papaparse'
 import { DataFilterExtension, FillStyleExtension } from '@deck.gl/extensions'
 // meta
 import { useLitteraMethods } from '@assembless/react-littera'
-import { Box, Button, Grid, Icon, Modal, Typography } from '@mui/material'
+import {
+	Box,
+	Button,
+	Divider,
+	Grid,
+	Icon,
+	Modal,
+	Typography
+} from '@mui/material'
 import { max, extent } from 'd3-array'
-import { scaleTime, scaleLinear } from '@visx/scale'
+import { scaleTime, scaleLinear, scaleLog } from '@visx/scale'
 
 import 'mapbox-gl/dist/mapbox-gl.css'
-import { Axis } from '@visx/axis'
+import { Axis, AxisBottom, AxisLeft } from '@visx/axis'
 import Stack from '@mui/material/Stack'
+import { Group } from '@visx/group'
+import { LinePath } from '@visx/shape'
 import Image from 'next/image'
 import { ParentSize } from '@visx/responsive'
 import { Text } from '@visx/text'
@@ -76,12 +86,59 @@ const PATTERN_MAPPING = {
 }
 
 export default function EventMap({ controller = true }) {
-	const [data, setData] = useState([])
-	const [currentObject, setCurrentObject] = useState({})
+	// MODAL
 	const [modalOpen, setModalOpen] = useState(false)
 	const handleToggleModal = () => setModalOpen((prev) => !prev)
+
+	// EVENT DETECTIONS
+	const [data, setData] = useState([])
 	const handleLoadData = (data) => {
 		setData(data.data.map((f, id) => ({ ...f, id })))
+	}
+	useEffect(() => {
+		const fetchData = async () => {
+			Papa.parse('/data/mockData.csv', {
+				header: true,
+				download: true,
+				dynamicTyping: true,
+				complete: handleLoadData
+			})
+		}
+		fetchData()
+	}, [])
+
+	//SOUND DATA
+	const [soundData, setSoundData] = useState([])
+	const [activePhone, setActivePhone] = useState('')
+	const handleLoadSoundData = (data) => {
+		setSoundData(data.data.map((f) => ({ ...f, time: new Date(f.time) })))
+	}
+	useEffect(() => {
+		const fetchData = async () => {
+			Papa.parse('/data/mockSoundData.csv', {
+				header: true,
+				download: true,
+				dynamicTyping: true,
+				complete: handleLoadSoundData
+			})
+		}
+		fetchData()
+	}, [])
+
+	// MAP
+	const [currentObject, setCurrentObject] = useState({})
+	const handleChartClick = (d) => {
+		if (d) {
+			setCurrentObject(d)
+			setViewport((prev) => ({
+				...prev,
+				latitude: d.y,
+				longitude: d.x,
+				zoom: 11
+			}))
+		} else {
+			setCurrentObject({})
+		}
 	}
 	const handleMapHover = ({ x, y, object }) => {
 		if (object) {
@@ -96,22 +153,23 @@ export default function EventMap({ controller = true }) {
 	}
 	const viewport = useViewport()
 	const setViewport = useSetViewport()
-
-	useEffect(() => {
-		const fetchData = async () => {
-			Papa.parse('/data/mockData.csv', {
-				header: true,
-				download: true,
-				dynamicTyping: true,
-				complete: handleLoadData
-			})
-		}
-		fetchData()
-	}, [])
 	const [glContext, setGLContext] = useState()
 	const { locale } = useLitteraMethods()
 	const mapRef = useRef()
 	const deckRef = useRef()
+
+	const dateRange = extent(data, getDate)
+	const getDateScale = () => {
+		const max = dateRange[1]
+		let min = new Date(dateRange[1])
+		min.setDate(min.getDate() - 7)
+
+		const scale = scaleTime()
+			.domain([min, max])
+			.range(['#d3d3d3', '#ff0000'])
+		return scale
+	}
+	const dateScale = getDateScale()
 
 	const layers = [
 		new ScatterplotLayer({
@@ -200,7 +258,12 @@ export default function EventMap({ controller = true }) {
 			getSize: 1.5,
 			onHover: handleMapHover,
 			iconAtlas: '/img/map_icons.png',
-			getColor: (d) => !currentObject?.id || currentObject.id === d.id ? [255, 60, 60] : [60,60,60],
+			getColor: (d) => {
+				if (!currentObject?.id || currentObject.id === d.id) {
+					return dateScale(d.time).slice(4,-1).split(',').map(x => parseInt(x))
+				}
+				return [60, 60, 60]
+			},
 			iconMapping: ICON_MAPPING,
 			getIcon: (d) => d.type,
 			sizeScale: 8,
@@ -221,7 +284,6 @@ export default function EventMap({ controller = true }) {
 			map.addLayer(new MapboxLayer({ id, deck }), 'road-label-simple')
 		})
 	}, []) //eslint-disable-line react-hooks/exhaustive-deps
-	console.log(currentObject)
 	return (
 		<>
 			<Stack spacing={0} sx={{ height: '100vh' }}>
@@ -234,7 +296,7 @@ export default function EventMap({ controller = true }) {
 					}}
 				>
 					<Grid container spacing={1}>
-						<Grid item xs={6} md={8} sx={{ marginTop: '-5px' }}>
+						<Grid item xs={6} md={3} sx={{ mt: 0, mb: 0 }}>
 							<Typography
 								variant="h5"
 								element="h1"
@@ -243,9 +305,30 @@ export default function EventMap({ controller = true }) {
 							>
 								Sounds of Ukraine
 							</Typography>
-							<Typography>EN | RU | UA</Typography>
+							<Typography variant="h6" sx={{ mb: 0 }}>
+								Mapping the sounds of Kyiv
+							</Typography>
+							<Typography sx={{ mr: 3 }}>EN | RU | UA</Typography>
 						</Grid>
-						<Grid item xs={6} md={4}>
+						<Grid item xs={6} md={7}>
+							<Typography>
+								Lorem ipsum dolor sit amet, consectetur
+								adipiscing elit. Etiam lorem ante, egestas a
+								tristique eget, ullamcorper sed enim. Integer
+								tellus nisl, ornare non rutrum ac, euismod ut
+								eros. Praesent laoreet dictum lectus vel rutrum.
+								Mauris porttitor pretium auctor. Mauris nec
+								tempus metus, vitae convallis tellus.
+							</Typography>
+						</Grid>
+						<Grid
+							item
+							xs={6}
+							md={2}
+							display="flex"
+							flexDirection="row"
+							justifyContent="flex-end"
+						>
 							<Box>
 								<Link href="/methods">
 									<a
@@ -265,6 +348,98 @@ export default function EventMap({ controller = true }) {
 									</a>
 								</Link>
 							</Box>
+						</Grid>
+						<Grid item xs={12} sx={{ mb: 2 }}>
+							<Divider />
+						</Grid>
+						<Grid item xs={1}>
+							{['phone1', 'phone2', 'phone3'].map((phone, i) => (
+								<Button
+									key={phone}
+									variant={
+										activePhone === phone
+											? 'contained'
+											: 'outlined'
+									}
+									color="primary"
+									size="small"
+									onClick={() => setActivePhone(phone)}
+									sx={{
+										display: 'block',
+										textTransform: 'none'
+									}}
+								>
+									{phone}
+								</Button>
+							))}
+						</Grid>
+						<Grid item xs={10} md={9} lg={9}>
+							<Timeline
+								data={data}
+								soundData={soundData}
+								handleChartClick={handleChartClick}
+								activePhone={activePhone}
+							/>
+						</Grid>
+
+						<Grid item xs={12} md={2}>
+							<Stack>
+								{Object.entries(ICON_MAPPING).map(
+									([key, _value]) => (
+										<Box
+											alignItems="flex-start"
+											display="flex"
+											key={key}
+										>
+											<Box
+												sx={{
+													width: '20px',
+													display: 'inline-block',
+													marginRight: '5px'
+												}}
+											>
+												<Image
+													src={`/img/${key}.png`}
+													alt="Icons on the map representing different events"
+													width="20px"
+													height="20px"
+												/>
+											</Box>
+											<Typography
+												sx={{
+													display: 'inline-block',
+													textTransform: 'lowercase'
+												}}
+											>
+												{key}
+											</Typography>
+										</Box>
+									)
+								)}
+
+								<Box sx={{ display: 'flex' }}>
+									<Box
+										sx={{
+											width: '20px',
+											display: 'inline-block',
+											marginRight: '5px'
+										}}
+									>
+										{/* filter via https://codepen.io/sosuke/pen/Pjoqqp */}
+										<Image
+											src="/img/confidence_area.png"
+											alt="Icons on the map representing different events"
+											width="20px"
+											height="20px"
+										/>
+									</Box>
+									<Typography
+										sx={{ display: 'inline-block' }}
+									>
+										Confidence Radius
+									</Typography>
+								</Box>
+							</Stack>
 						</Grid>
 					</Grid>
 				</Box>
@@ -299,17 +474,21 @@ export default function EventMap({ controller = true }) {
 									offset={[0, -40]}
 									key={'marker-' + idx}
 									style={{
-										display: 
-											viewport.zoom > 11.5 || currentObject.id === row.id  ? 'initial' : 'none'
+										display:
+											viewport.zoom > 11.5 ||
+											currentObject.id === row.id
+												? 'initial'
+												: 'none'
 									}}
 								>
 									<Box
 										sx={{
 											padding: '.5em',
-											boxShadow: '0px 0px 10px rgba(0,0,0,0.9)',
+											boxShadow:
+												'0px 0px 10px rgba(0,0,0,0.9)',
 											background: '#192432',
 											pointerEvents: 'none',
-											zIndex: 500000,
+											zIndex: 500000
 										}}
 									>
 										<Typography
@@ -317,20 +496,17 @@ export default function EventMap({ controller = true }) {
 											color="primary"
 										>
 											<b>{row.type.toLowerCase()}</b>{' '}
-											
 											<br />
 											{row.time.toLocaleDateString()}
 											<br />
 											<br />
-											{Math.round(
-												row.x * 100000
-											) / 100000}
+											{Math.round(row.x * 100000) /
+												100000}
 											,
-											{Math.round(
-												row.y * 100000
-											) / 100000}
-											<br/>
-<b>Confidence Radius:</b>{' '}
+											{Math.round(row.y * 100000) /
+												100000}
+											<br />
+											<b>Confidence Radius:</b>{' '}
 											{Math.round(row.radius)}m{' '}
 										</Typography>
 									</Box>
@@ -382,80 +558,6 @@ export default function EventMap({ controller = true }) {
 						</Button>
 					</Stack>
 				</Box>
-				<Grid
-					container
-					spacing={1}
-					sx={{
-						background: '#192432',
-						padding: '2em 1em 1em 1em',
-						color: 'white',
-						boxShadow: '0px -10px 10px rgba(0,0,0,0.9)'
-					}}
-				>
-					<Grid item xs={12} md={4}>
-						Audio viz
-					</Grid>
-					<Grid item xs={12} md={4}>
-						<Timeline
-							data={data}
-							setCurrentObject={setCurrentObject}
-						/>
-					</Grid>
-
-					<Grid item xs={12} md={4}>
-						<Stack>
-							{Object.entries(ICON_MAPPING).map(
-								([key, _value]) => (
-									<Box alignItems="flex-start" display="flex" key={key}>
-										<Box
-											sx={{
-												width: '20px',
-												display: 'inline-block',
-												marginRight: '5px'
-											}}
-										>
-											<Image
-												src={`/img/${key}.png`}
-												alt="Icons on the map representing different events"
-												width="20px"
-												height="20px"
-											/>
-										</Box>
-										<Typography
-											sx={{
-												display: 'inline-block',
-												textTransform: 'lowercase'
-											}}
-										>
-											{key}
-										</Typography>
-									</Box>
-								)
-							)}
-
-							<Box sx={{ display: 'flex' }}>
-								<Box
-									sx={{
-										width: '20px',
-										display: 'inline-block',
-										marginRight: '5px'
-									}}
-								>
-									{/* filter via https://codepen.io/sosuke/pen/Pjoqqp */}
-									<Image
-										src="/img/confidence_area.png"
-										alt="Icons on the map representing different events"
-										width="20px"
-										height="20px"
-									/>
-								</Box>
-								<Typography sx={{ display: 'inline-block' }}>
-									Confidence Radius
-								</Typography>
-							</Box>
-						</Stack>
-					</Grid>
-				</Grid>
 			</Stack>
 			<Button
 				variant="text"
@@ -568,9 +670,13 @@ const MethodModalShort = ({ open, handleClose }) => {
 }
 
 const getDate = (x) => x.time
-const width = 300
-const height = 50
-const Timeline = ({ data, setCurrentObject }) => {
+const getPhone1 = (x) => x.phone1
+const getPhone2 = (x) => x.phone2
+const getPhone3 = (x) => x.phone3
+
+const height = 150
+
+const Timeline = ({ data, soundData, handleChartClick, activePhone }) => {
 	return (
 		<ParentSize>
 			{(parent) => (
@@ -578,7 +684,9 @@ const Timeline = ({ data, setCurrentObject }) => {
 					width={parent.width}
 					height={height}
 					data={data}
-					setCurrentObject={setCurrentObject}
+					soundData={soundData}
+					handleChartClick={handleChartClick}
+					activePhone={activePhone}
 				/>
 			)}
 		</ParentSize>
@@ -588,19 +696,34 @@ const Timeline = ({ data, setCurrentObject }) => {
 const margin = {
 	top: 20,
 	right: 20,
-	bottom: 20,
+	bottom: 50,
 	left: 20
 }
 
-const TimelineInner = ({ width, height, data, setCurrentObject }) => {
+const TimelineInner = ({
+	width,
+	height,
+	data,
+	soundData,
+	handleChartClick,
+	activePhone
+}) => {
 	const scaleDate = useMemo(
 		() =>
 			scaleTime({
-				range: [0, width - margin.left - margin.right],
-				domain: extent(data, getDate)
+				range: [margin.left, width - margin.left - margin.right],
+				domain: extent(soundData, getDate)
 			}),
-		[width, data.length], // eslint-disable-next-line react-hooks/exhaustive-deps
-		[] // eslint-disable-line react-hooks/exhaustive-deps
+		[width, soundData?.length] // eslint-disable-line react-hooks/exhaustive-deps
+	)
+
+	const scaleFrequency = useMemo(
+		() =>
+			scaleLinear({
+				range: [height - margin.top - margin.bottom, 0],
+				domain: [0, 5000]
+			}),
+		[soundData?.length] // eslint-disable-line react-hooks/exhaustive-deps
 	)
 
 	return (
@@ -614,28 +737,77 @@ const TimelineInner = ({ width, height, data, setCurrentObject }) => {
 			>
 				Detection Timeline
 			</Text>
-			<g transform="translate(0,20)">
-				{data.map((d, i) => {
-					const x = scaleDate(d.time)
-					const y = 5
-					const r = 2
-					const color = '#ff0000'
+			{data.map((d, i) => {
+				const x = Math.min(
+					scaleDate(d.time),
+					width - margin.left - margin.right
+				)
+				const y = height - 20
+				const r = 4
+				const color = '#ff0000'
+				return (
+					<g key={i}>
+						<circle
+							cx={x}
+							cy={y}
+							r={r}
+							fill={color}
+						/>
+						<circle
+							cx={x}
+							cy={y}
+							r={40}
+							fill={'rgba(0,0,0,0'}
+							onClick={() => handleChartClick(d)}
+							onMouseEnter={() => handleChartClick(d)}
+							onMouseLeave={() => handleChartClick(null)}
+						/>
+						<line
+							x1={x}
+							y1={margin.top}
+							x2={x}
+							y2={height - margin.bottom}
+							stroke="red"
+							strokeDasharray="2,2"
+						/>
+						<line
+							x1={x}
+							y1={margin.top}
+							x2={x}
+							y2={height - margin.bottom}
+							stroke="rgba(0,0,0,0)"
+							strokeWidth="40"
+							onClick={() => handleChartClick(d)}
+							onMouseEnter={() => handleChartClick(d)}
+							onMouseLeave={() => handleChartClick(null)}
+						/>
+					</g>
+				)
+			})}
+			<g>
+				{['phone1', 'phone2', 'phone3'].map((_phone, i) => {
+					const getY = (d) => d[`phone${i + 1}`]
 					return (
-						<g key={i}>
-							<circle
-								cx={x}
-								cy={y}
-								r={r}
-								fill={color}
-								onClick={() => setCurrentObject(d)}
+						<Group key={`lines-${i}`} top={margin.top}>
+							<LinePath
+								data={soundData}
+								x={(d) => scaleDate(getDate(d))}
+								y={(d) => scaleFrequency(getY(d))}
+								stroke="#999"
+								strokeWidth={0.5}
+								strokeOpacity={
+									activePhone === '' || activePhone === _phone
+										? 1
+										: 0.25
+								}
 							/>
-						</g>
+						</Group>
 					)
 				})}
-				<Axis
+				<AxisBottom
 					scale={scaleDate}
 					label="Date"
-					top="10"
+					top={height - margin.bottom}
 					stroke={'white'}
 					tickStroke={'white'}
 					tickLabelProps={() => ({
@@ -644,9 +816,9 @@ const TimelineInner = ({ width, height, data, setCurrentObject }) => {
 						textAnchor: 'middle',
 						fontFamily: "'Jost', sans-serif"
 					})}
-					tickFormat={(d) => {
-						return `${d.getMonth() + 1}-${d.getDay() + 1}`
-					}}
+					// tickFormat={(d) => {
+					// 	return `${d.getMonth() + 1}-${d.getDay() + 1}`
+					// }}
 				/>
 			</g>
 		</svg>
