@@ -10,7 +10,7 @@ export const ViewportProvider = ({ defaultViewport = {}, children }) => {
 
   const handleViewport = debounce((viewport) => {
     setViewport(viewport)
-  }, 5);
+  }, 4);
 
   return (
     <ViewportContext.Provider value={viewport}>

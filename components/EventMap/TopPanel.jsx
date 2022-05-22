@@ -22,28 +22,23 @@ export function TopPanel({
 			}}
 		>
 			<Grid container spacing={1}>
-				<Grid item xs={6} md={3} sx={{ mt: 0, mb: 0 }}>
+				<Grid item xs={6} md={2} sx={{ mt: 0, mb: 0 }}>
 					<Typography
-						variant="h5"
 						element="h1"
 						color="primary"
 						fontWeight="bold"
 					>
 						Sounds of Ukraine
 					</Typography>
-					<Typography variant="h6" sx={{ mb: 0 }}>
+					<Typography element="h2" sx={{ mb: 0 }}>
 						Mapping the sounds of Kyiv
 					</Typography>
-					<Typography sx={{ mr: 3 }}>EN | RU | UA</Typography>
 				</Grid>
-				<Grid item xs={6} md={7}>
+				<Grid item xs={6} md={8}>
 					<Typography>
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-						Etiam lorem ante, egestas a tristique eget, ullamcorper
-						sed enim. Integer tellus nisl, ornare non rutrum ac,
-						euismod ut eros. Praesent laoreet dictum lectus vel
-						rutrum. Mauris porttitor pretium auctor. Mauris nec
-						tempus metus, vitae convallis tellus.
+						The timeline below shows audio signals from our microphones across the city. Click on a marker to listen to the sound. 
+						<br/>
+						Around each event, the circle represents the confidence radius where the event is most likely to have occured.
 					</Typography>
 				</Grid>
 				<Grid
@@ -51,8 +46,10 @@ export function TopPanel({
 					xs={6}
 					md={2}
 					display="flex"
-					flexDirection="row"
+					flexDirection="column"
 					justifyContent="flex-end"
+					alignContent="flex-end"
+					flexWrap="wrap"
 				>
 					<Box>
 						<Link href="/methods">
@@ -67,14 +64,16 @@ export function TopPanel({
 									fontFamily: "'Jost', sans-serif",
 									fontSize: '.875rem',
 									transform: 'translateY(5px)'
+									
 								}}
 							>
 								Narrative
 							</a>
 						</Link>
 					</Box>
+					<Typography sx={{ mt: 1 }}>EN | RU | UA</Typography>
 				</Grid>
-				<Grid item xs={12} sx={{ mb: 2 }}>
+				<Grid item xs={12} sx={{ mb: 1 }}>
 					<Divider />
 				</Grid>
 				<Grid item xs={1}>

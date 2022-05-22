@@ -18,6 +18,12 @@ const margin = {
 	left: 20
 }
 
+const getDaysAgo = (date, days) => {
+	let tempDate = new Date(date)
+	tempDate.setDate(tempDate.getDate() - days)
+	return tempDate
+}
+
 const TimelineInner = ({
 	width,
 	height,
@@ -26,11 +32,25 @@ const TimelineInner = ({
 	handleChartClick,
 	activePhone
 }) => {
+	const xMax = width - margin.left - margin.right
+	const yMax = height - margin.top - margin.bottom
+	const dateExtent = extent(soundData, getDate);
+	
 	const scaleDate = useMemo(
 		() =>
 			scaleTime({
-				range: [margin.left, width - margin.left - margin.right],
-				domain: extent(soundData, getDate)
+				range: [
+					margin.left, 
+					xMax/4, 
+					xMax/2, 
+					xMax
+				],
+				domain: [
+					dateExtent[0], 
+					getDaysAgo(dateExtent[1], 2), 
+					getDaysAgo(dateExtent[1], 1), 
+					dateExtent[1]
+				]
 			}),
 		[width, soundData?.length] // eslint-disable-line react-hooks/exhaustive-deps
 	)
@@ -38,7 +58,7 @@ const TimelineInner = ({
 	const scaleFrequency = useMemo(
 		() =>
 			scaleLinear({
-				range: [height - margin.top - margin.bottom, 0],
+				range: [yMax, 0],
 				domain: [0, 5000]
 			}),
 		[soundData?.length] // eslint-disable-line react-hooks/exhaustive-deps
@@ -77,8 +97,6 @@ const TimelineInner = ({
 							r={40}
 							fill={'rgba(0,0,0,0'}
 							onClick={() => handleChartClick(d)}
-							onMouseEnter={() => handleChartClick(d)}
-							onMouseLeave={() => handleChartClick(null)}
 						/>
 						<line
 							x1={x}
@@ -96,8 +114,6 @@ const TimelineInner = ({
 							stroke="rgba(0,0,0,0)"
 							strokeWidth="40"
 							onClick={() => handleChartClick(d)}
-							onMouseEnter={() => handleChartClick(d)}
-							onMouseLeave={() => handleChartClick(null)}
 						/>
 					</g>
 				)

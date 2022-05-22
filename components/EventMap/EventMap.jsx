@@ -1,13 +1,13 @@
-import { useState, useRef, useCallback, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 // MAP
+import useSound from 'use-sound';
 import DeckGL from '@deck.gl/react'
 import ReactMapGl, { Marker } from 'react-map-gl'
 import { IconLayer, ScatterplotLayer } from '@deck.gl/layers'
 import Papa from 'papaparse'
-import { FillStyleExtension } from '@deck.gl/extensions'
 // meta
 import { useLitteraMethods } from '@assembless/react-littera'
-import { Box, Button, Typography } from '@mui/material'
+import { Box, Button } from '@mui/material'
 import { extent } from 'd3-array'
 import { scaleTime } from '@visx/scale'
 
@@ -19,11 +19,12 @@ import { MethodModal } from './MethodsModal'
 import { MapButtons } from './MapButton'
 import { TopPanel } from './TopPanel'
 import MapMarkers from './MapMarkers'
+import { AudioPlayer } from './AudioPlayer'
 
 const mapStyle = 'mapbox://styles/dhalpern/cl2ih86m6000414lt3r30nf6h'
 const MAPBOX_TOKEN =
 	'pk.eyJ1IjoiZGhhbHBlcm4iLCJhIjoiY2p3MHFvZHg2MDcyczQ4bXBjNW85aDh2OCJ9.OUluk6vAGe5BVXLOiGIoQQ'
-
+const defaultPlaceholder = "/audio/placeholder.wav"
 
 const TextMap = {
 	SHELLING: 'B',
@@ -93,6 +94,8 @@ export function EventMap({ controller = true }) {
 		}
 		fetchData()
 	}, [])
+	// SOUNDS
+	const [muted, setMuted] = useState(false)
 
 	//SOUND DATA
 	const [soundData, setSoundData] = useState([])
@@ -114,6 +117,13 @@ export function EventMap({ controller = true }) {
 
 	// MAP
 	const [currentObject, setCurrentObject] = useState({})
+    const track = currentObject?.file || defaultPlaceholder
+    const [play, { stop }] = useSound(track);
+	useEffect(() => {
+		if (currentObject && !muted) {
+			stop()
+		}
+	},[currentObject.id, track])
 	const handleChartClick = (d) => {
 		if (d) {
 			setCurrentObject(d)
@@ -123,10 +133,12 @@ export function EventMap({ controller = true }) {
 				longitude: d.x,
 				zoom: 11
 			}))
+			// play()
 		} else {
 			setCurrentObject({})
 		}
 	}
+
 	const handleMapHover = ({ x, y, object }) => {
 		if (object) {
 			setCurrentObject({
@@ -138,6 +150,11 @@ export function EventMap({ controller = true }) {
 			setCurrentObject({})
 		}
 	}
+	
+	const handleMapClick = () => {
+		play()
+	}
+
 	const viewport = useViewport()
 	const setViewport = useSetViewport()
 	const { locale } = useLitteraMethods()
@@ -165,6 +182,7 @@ export function EventMap({ controller = true }) {
 			getText: (d) => TextMap[d.type],
 			getSize: 1.5,
 			onHover: handleMapHover,
+			onClick: handleMapClick,
 			iconAtlas: '/img/map_icons.png',
 			getColor: (d) => {
 				if (!currentObject?.id || currentObject.id === d.id) {
@@ -199,7 +217,8 @@ export function EventMap({ controller = true }) {
 			lineWidthMinPixels: 1,
 			getRadius: (d) => d.radius,
 			getLineColor: (d) => [255, 255, 255],
-			onHover: handleMapHover
+			onHover: handleMapHover,
+			onClick: handleMapClick,
 		}),
 		new ScatterplotLayer({
 			id: 'confidence area highlight',
@@ -215,6 +234,7 @@ export function EventMap({ controller = true }) {
 			lineWidthMinPixels: 2,
 			getRadius: (d) => d.radius,
 			onHover: handleMapHover,
+			onClick: handleMapClick,
 			getFillColor: (d) => [
 				10,
 				0,
@@ -240,7 +260,8 @@ export function EventMap({ controller = true }) {
 			getRadius: (d) => d.radius,
 			getFillColor: [200, 200, 200, 15],
 			getLineColor: [255, 255, 255],
-			onHover: handleMapHover
+			onHover: handleMapHover,
+			onClick: handleMapClick,
 		})
 	]
 
@@ -254,7 +275,7 @@ export function EventMap({ controller = true }) {
 						setActivePhone,
 						handleChartClick,
 						data,
-						soundData
+						soundData,
 					}}
 				/>
 				<Box
@@ -309,6 +330,7 @@ export function EventMap({ controller = true }) {
 				Methods &amp; About
 			</Button>
 			<MethodModal open={modalOpen} handleClose={handleToggleModal} />
+			<AudioPlayer currentObject={currentObject} muted={muted} />
 		</>
 	)
 }
