@@ -13,7 +13,7 @@ export const AudioPlayer = ({ currentObject, muted }) => {
         if (currentObject && !muted) {
             play()
         }
-    },[track])
+    },[track]) //eslint-disable-line react-hooks/exhaustive-deps
 	return <Box sx={{position:'fixed', bottom:0, left:'50%'}}>
     </Box>
 }

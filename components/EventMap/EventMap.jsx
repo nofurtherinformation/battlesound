@@ -123,7 +123,8 @@ export function EventMap({ controller = true }) {
 		if (currentObject && !muted) {
 			stop()
 		}
-	},[currentObject.id, track])
+	},[currentObject.id, track]) //eslint-disable-line react-hooks/exhaustive-deps
+	
 	const handleChartClick = (d) => {
 		if (d) {
 			setCurrentObject(d)
