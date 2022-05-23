@@ -127,8 +127,7 @@ const TimelineInner = ({
 				{['phone1', 'phone2', 'phone3'].map((_phone, i) => {
 					const getY = (d) => d[`phone${i + 1}`]
 					return (
-						<Group key={`lines-${i}`} top={margin.top} 
-						top={i * 50 - 50}>
+						<Group key={`lines-${i}`} top={i * 50 - 50}>
 							<LinePath
 								data={soundData}
 								x={(d) => scaleDate(getDate(d))}
