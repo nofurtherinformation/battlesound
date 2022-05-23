@@ -51,7 +51,7 @@ export function TopPanel({
 					alignContent="flex-end"
 					flexWrap="wrap"
 				>
-					<Box>
+					{/* <Box>
 						<Link href="/methods">
 							<a
 								style={{
@@ -70,7 +70,7 @@ export function TopPanel({
 								Narrative
 							</a>
 						</Link>
-					</Box>
+					</Box> */}
 					<Typography sx={{ mt: 1 }}>EN | RU | UA</Typography>
 				</Grid>
 				<Grid item xs={12} sx={{ mb: 1 }}>
@@ -81,7 +81,7 @@ export function TopPanel({
 						<Button
 							key={phone}
 							variant={
-								activePhone === phone ? 'contained' : 'outlined'
+								activePhone === phone ? 'contained' : 'text'
 							}
 							color="primary"
 							size="small"

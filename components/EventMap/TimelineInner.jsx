@@ -11,6 +11,11 @@ const getPhone2 = (x) => x.phone2
 const getPhone3 = (x) => x.phone3
 const getDate = (x) => x.time
 
+const colors = {
+	"phone1": 'lightgray',
+	"phone2": 'chartreuse',
+	"phone3": 'skyblue',
+}
 const margin = {
 	top: 20,
 	right: 20,
@@ -59,7 +64,7 @@ const TimelineInner = ({
 		() =>
 			scaleLinear({
 				range: [yMax, 0],
-				domain: [0, 5000]
+				domain: [0, 3000]
 			}),
 		[soundData?.length] // eslint-disable-line react-hooks/exhaustive-deps
 	)
@@ -122,12 +127,13 @@ const TimelineInner = ({
 				{['phone1', 'phone2', 'phone3'].map((_phone, i) => {
 					const getY = (d) => d[`phone${i + 1}`]
 					return (
-						<Group key={`lines-${i}`} top={margin.top}>
+						<Group key={`lines-${i}`} top={margin.top} 
+						top={i * 50 - 50}>
 							<LinePath
 								data={soundData}
 								x={(d) => scaleDate(getDate(d))}
 								y={(d) => scaleFrequency(getY(d))}
-								stroke="#999"
+								stroke={colors[_phone]}
 								strokeWidth={0.5}
 								strokeOpacity={
 									activePhone === '' || activePhone === _phone
