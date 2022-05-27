@@ -6,15 +6,12 @@ import { Group } from '@visx/group'
 import { LinePath } from '@visx/shape'
 import { Text } from '@visx/text'
 
-const getPhone1 = (x) => x.phone1
-const getPhone2 = (x) => x.phone2
-const getPhone3 = (x) => x.phone3
 const getDate = (x) => x.time
 
 const colors = {
-	"phone1": 'lightgray',
-	"phone2": 'chartreuse',
-	"phone3": 'skyblue',
+	"Mic1": 'lime',
+	"Mic2": 'purple',
+	"Mic3": 'yellow',
 }
 const margin = {
 	top: 20,
@@ -124,8 +121,8 @@ const TimelineInner = ({
 				)
 			})}
 			<g>
-				{['phone1', 'phone2', 'phone3'].map((_phone, i) => {
-					const getY = (d) => d[`phone${i + 1}`]
+				{['Mic1', 'Mic2', 'Mic3'].map((_phone, i) => {
+					const getY = (d) => d[`Mic${i + 1}`]
 					return (
 						<Group key={`lines-${i}`} top={i * 50 - 50}>
 							<LinePath

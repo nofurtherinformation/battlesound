@@ -77,7 +77,7 @@ export function TopPanel({
 					<Divider />
 				</Grid>
 				<Grid item xs={1}>
-					{['phone1', 'phone2', 'phone3'].map((phone, i) => (
+					{['Mic1', 'Mic2', 'Mic3'].map((phone, i) => (
 						<Button
 							key={phone}
 							variant={
@@ -87,8 +87,7 @@ export function TopPanel({
 							size="small"
 							onClick={() => setActivePhone(phone)}
 							sx={{
-								display: 'block',
-								textTransform: 'none'
+								display: 'block'
 							}}
 						>
 							{phone}
