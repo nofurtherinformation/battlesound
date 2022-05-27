@@ -24,10 +24,13 @@ const RealtimeTimelineInner = ({
 }) => {
 	const [data, setData] = useState([])
 	const [timeOffset, setTimeOffset] = useState(0)
+	const [dataSnapshot, setDataSnapshot] = useState(0)
 	
 	const handleLoadData = (data) => {
 		const hz = data.data.length / 60
 		setData(data.data.map((d,i) => ({...d, t: i/hz})))
+		setDataSnapshot(performance.now())
+		setTimeOffset(0)
 	}
 
 	const fetchData = async () => {
@@ -79,7 +82,7 @@ const RealtimeTimelineInner = ({
 		stroke={'white'}
 		strokeWidth={0.5}
 	/>
-	},[data.length])
+	},[data.length, dataSnapshot])
 	if (!data?.length){
 		return null
 	}
