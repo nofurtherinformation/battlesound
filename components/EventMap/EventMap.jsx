@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 // MAP
-import useSound from 'use-sound';
+// import useSound from 'use-sound';
 import DeckGL from '@deck.gl/react'
 import ReactMapGl, { Marker } from 'react-map-gl'
 import { IconLayer, ScatterplotLayer } from '@deck.gl/layers'
@@ -33,10 +33,13 @@ const TextMap = {
 }
 
 const ICON_MAPPING = {
-	SIREN: { x: 0, y: 0, width: 128, height: 128, mask: true },
-	GUNFIRE: { x: 128, y: 0, width: 128, height: 128, mask: true },
-	SHELLING: { x: 256, y: 0, width: 128, height: 128, mask: true }
+	EXPLOSION: { x: 512, y: 0, width: 128, height: 128, mask: true },
+	SIREN:{ x: 384, y: 0, width: 128, height: 128, mask: true },
+	BIRD:{ x: 256, y: 0, width: 128, height: 128, mask: true },
+	DOG:{ x: 128, y: 0, width: 128, height: 128, mask: true },
+	TRAFFIC:{ x: 0, y: 0, width: 128, height: 128, mask: true }
 }
+
 const PATTERN_MAPPING = {
 	'hatch-1x': {
 		x: 4,
@@ -118,7 +121,9 @@ export function EventMap({ controller = true }) {
 	// MAP
 	const [currentObject, setCurrentObject] = useState({})
     const track = currentObject?.file || defaultPlaceholder
-    const [play, { stop }] = useSound(track);
+    // const [play, { stop }] = useSound(track);
+	const play = () => {}
+	const stop = () => {}
 	useEffect(() => {
 		if (currentObject && !muted) {
 			stop()
