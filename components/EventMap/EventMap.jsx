@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 // MAP
-// import useSound from 'use-sound';
+import useSound from 'use-sound';
 import DeckGL from '@deck.gl/react'
 import ReactMapGl, { Marker } from 'react-map-gl'
 import { IconLayer, ScatterplotLayer, TextLayer } from '@deck.gl/layers'
@@ -135,9 +135,8 @@ export function EventMap({ controller = true }) {
 	// MAP
 	const [currentObject, setCurrentObject] = useState({})
     const track = currentObject?.file || defaultPlaceholder
-    // const [play, { stop }] = useSound(track);
-	const play = () => {}
-	const stop = () => {}
+    const [play, { stop }] = useSound(track);
+	
 	useEffect(() => {
 		if (currentObject && !muted) {
 			stop()
