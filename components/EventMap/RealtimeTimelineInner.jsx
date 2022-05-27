@@ -51,7 +51,7 @@ const RealtimeTimelineInner = ({
 			clearInterval(offsetInterval)
 			clearInterval(dataInterval)
 		}
-	}, [])
+	}, []) // eslint-disable-line react-hooks/exhaustive-deps
 	
 	const xMax = width - margin.left - margin.right
 	const yMax = height - margin.top - margin.bottom
@@ -82,7 +82,7 @@ const RealtimeTimelineInner = ({
 		stroke={'white'}
 		strokeWidth={0.5}
 	/>
-	},[data.length, dataSnapshot])
+	},[data.length, dataSnapshot]) // eslint-disable-line react-hooks/exhaustive-deps
 	if (!data?.length){
 		return null
 	}
