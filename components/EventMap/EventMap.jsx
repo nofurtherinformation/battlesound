@@ -211,10 +211,11 @@ export function EventMap({ controller = true }) {
 			pickable: true,
 			getPosition: (d) => [d.x, d.y, 10],
 			getSize: 1.5,
-			sizeScale: 16,
+			sizeScale: 8,
 			getText: d => d.id,
 			getColor: [255,255,255],
-			getPixelOffset: 50
+			getPixelOffset: 35,
+			
 			
 		}),
 		new IconLayer({

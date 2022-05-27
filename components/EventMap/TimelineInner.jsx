@@ -9,15 +9,15 @@ import { Text } from '@visx/text'
 const getDate = (x) => x.time
 
 const colors = {
-	"Mic1": '#c95d99',
-	"Mic2": '#2a7c9d', 
-	"Mic3": '#ca7b3f',
+	"Mic1": '#ffffff',
+	"Mic2": '#c6c6c6', 
+	"Mic3": '#8c8c8c',
 }
 const margin = {
 	top: 20,
-	right: 20,
+	right: 0,
 	bottom: 50,
-	left: 20
+	left: 0
 }
 
 const getDaysAgo = (date, days) => {
@@ -65,7 +65,7 @@ const TimelineInner = ({
 			}),
 		[soundData?.length] // eslint-disable-line react-hooks/exhaustive-deps
 	)
-
+			console.log(data)
 	return (
 		<svg width={width} height={height}>
 			<Text
@@ -84,7 +84,7 @@ const TimelineInner = ({
 				)
 				const y = height - 20
 				const r = 4
-				const color = '#ff0000'
+				const color = '#ffd506'
 				return (
 					<g key={i}>
 						<circle
@@ -105,7 +105,7 @@ const TimelineInner = ({
 							y1={margin.top}
 							x2={x}
 							y2={height - margin.bottom}
-							stroke="red"
+							stroke={color}
 							strokeDasharray="2,2"
 						/>
 						<line
