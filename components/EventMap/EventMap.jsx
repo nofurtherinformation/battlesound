@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 // import useSound from 'use-sound';
 import DeckGL from '@deck.gl/react'
 import ReactMapGl, { Marker } from 'react-map-gl'
-import { IconLayer, ScatterplotLayer } from '@deck.gl/layers'
+import { IconLayer, ScatterplotLayer, TextLayer } from '@deck.gl/layers'
 import Papa from 'papaparse'
 // meta
 import { useLitteraMethods } from '@assembless/react-littera'
@@ -38,6 +38,9 @@ const ICON_MAPPING = {
 	BIRD:{ x: 256, y: 0, width: 128, height: 128, mask: true },
 	DOG:{ x: 128, y: 0, width: 128, height: 128, mask: true },
 	TRAFFIC:{ x: 0, y: 0, width: 128, height: 128, mask: true }
+}
+const ICON_MAPPING2 = {
+	PHONE: { x:0, y:0, width:128, height:128, mask: true}
 }
 
 const PATTERN_MAPPING = {
@@ -83,8 +86,13 @@ export function EventMap({ controller = true }) {
 
 	// EVENT DETECTIONS
 	const [data, setData] = useState([])
+	const [phoneData, setPhoneData] = useState([])
+	
 	const handleLoadData = (data) => {
 		setData(data.data.map((f, id) => ({ ...f, id })))
+	}
+	const handleLoadPhoneData = (data) => {
+		setPhoneData(data.data)
 	}
 	useEffect(() => {
 		const fetchData = async () => {
@@ -93,6 +101,12 @@ export function EventMap({ controller = true }) {
 				download: true,
 				dynamicTyping: true,
 				complete: handleLoadData
+			})
+			Papa.parse('/data/mockPhoneLocations.csv', {
+				header: true,
+				download: true,
+				dynamicTyping: true,
+				complete: handleLoadPhoneData
 			})
 		}
 		fetchData()
@@ -177,9 +191,32 @@ export function EventMap({ controller = true }) {
 		return scale
 	}
 	const dateScale = getDateScale()
-
 	const layers = [
 		
+		new IconLayer({
+			id: 'phone locations',
+			data: phoneData,
+			pickable: true,
+			getPosition: (d) => [d.x, d.y, 10],
+			getSize: 1.5,
+			iconAtlas: '/img/PHONE_ICON.png',
+			getColor: [255,255,255],
+			iconMapping: ICON_MAPPING2,
+			getIcon: d=>'PHONE',
+			sizeScale: 16
+		}),
+		new TextLayer({
+			id: 'phone locations label',
+			data: phoneData,
+			pickable: true,
+			getPosition: (d) => [d.x, d.y, 10],
+			getSize: 1.5,
+			sizeScale: 16,
+			getText: d => d.id,
+			getColor: [255,255,255],
+			getPixelOffset: 50
+			
+		}),
 		new IconLayer({
 			id: 'center',
 			data,
