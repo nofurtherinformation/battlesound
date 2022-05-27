@@ -9,9 +9,9 @@ import { Text } from '@visx/text'
 const getDate = (x) => x.time
 
 const colors = {
-	"Mic1": 'lime',
-	"Mic2": 'purple',
-	"Mic3": 'yellow',
+	"Mic1": '#c95d99',
+	"Mic2": '#2a7c9d', 
+	"Mic3": '#ca7b3f',
 }
 const margin = {
 	top: 20,

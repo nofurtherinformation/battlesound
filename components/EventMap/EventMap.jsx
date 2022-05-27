@@ -71,8 +71,8 @@ const PATTERN_MAPPING = {
 	}
 }
 
-const gray = '#868686'
-const red = '#ff0000'
+const old = '#42a7ff'
+const recent = '#ffd506'
 
 const getDate = (x) => x.time
 
@@ -173,7 +173,7 @@ export function EventMap({ controller = true }) {
 
 		const scale = scaleTime()
 			.domain(['01-01-1970', min, max])
-			.range([gray, gray, red])
+			.range([old, old, recent])
 		return scale
 	}
 	const dateScale = getDateScale()
@@ -189,7 +189,7 @@ export function EventMap({ controller = true }) {
 			getSize: 1.5,
 			onHover: handleMapHover,
 			onClick: handleMapClick,
-			iconAtlas: '/img/map_icons.png',
+			iconAtlas: '/img/ICONS.png',
 			getColor: (d) => {
 				if (!currentObject?.id || currentObject.id === d.id) {
 					return dateScale(d.time)

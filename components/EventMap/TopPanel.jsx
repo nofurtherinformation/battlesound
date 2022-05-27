@@ -93,8 +93,20 @@ export function TopPanel({
 							{phone}
 						</Button>
 					))}
+					<Button
+						color="primary"
+						size="small"
+						variant="outlined"
+						onClick={() => setActivePhone('')}
+						sx={{
+							display: 'block',
+							textTransform: 'none'
+						}}
+					>
+						Reset &times;
+					</Button>
 				</Grid>
-				<Grid item xs={10} md={9} lg={9}>
+				<Grid item xs={10} md={9} lg={9} sx={{height:'35vh'}}>
 					<Timeline
 						{...{
 							data,
