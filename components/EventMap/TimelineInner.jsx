@@ -8,6 +8,13 @@ import { Text } from '@visx/text'
 
 const getDate = (x) => x.time
 
+const ICON_MAP = {
+	EXPLOSION: "/img/EXPLOSION.png",
+	SIREN: "/img/SIREN.png",
+	BIRD: "/img/BIRD.png",
+	DOG: "/img/DOG.png",
+	TRAFFIC: "/img/TRAFFIC.png"
+}
 const colors = {
 	Mic1: '#ffffff',
 	Mic2: '#c6c6c6',
@@ -82,9 +89,10 @@ const TimelineInner = ({
 					const y = height - 20
 					const r = 4
 					const color = '#ffd506'
+					const icon = ICON_MAP[d.type]
 					return (
 						<g key={i}>
-							<circle cx={x} cy={y} r={r} fill={color} />
+							<image x={x} y={y} transform="translate(-7.5 -7.5)" href={icon} alt="" height="15" width="15"/>
 							<circle
 								cx={x}
 								cy={y}

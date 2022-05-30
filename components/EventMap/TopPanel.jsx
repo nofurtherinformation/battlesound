@@ -3,7 +3,15 @@ import { Box, Grid, Typography, Button, Divider, Stack } from '@mui/material'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Timeline } from './Timeline'
+import { LegendLinear } from '@visx/legend'
+import { scaleLinear, scaleTime } from '@visx/scale'
 
+const old = '#42a7ff'
+const recent = '#ffd506'
+const scale = scaleLinear()
+	.domain([0, 1])
+	.range([old, recent])
+  
 export function TopPanel({
 	iconMapping,
 	activePhone,
@@ -119,6 +127,7 @@ export function TopPanel({
 
 				<Grid item xs={12} md={2}>
 					<Stack>
+						<Typography fontWeight="bold">Map Icons</Typography>
 						{Object.entries(iconMapping).map(([key, _value]) => (
 							<Box
 								alignItems="flex-start"
@@ -170,6 +179,18 @@ export function TopPanel({
 								Confidence Radius
 							</Typography>
 						</Box>
+						<br/>
+						<Typography fontWeight="bold">Color scale</Typography>
+						<LegendLinear
+							scale={scale}
+							direction="column"
+							itemDirection="row"
+							itemMargin={0}
+							steps={3}
+							shape="circle"
+							labelFormat={(value) => value === 0 ? 'older events' : value === 1 ? 'recent events' : '...'}
+							style={{fontFamily:"'Jost',sans-serif"}}
+						/>
 					</Stack>
 				</Grid>
 			</Grid>

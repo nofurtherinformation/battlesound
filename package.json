@@ -24,6 +24,7 @@
     "@prisma/client": "^3.11.1",
     "@visx/axis": "^2.6.0",
     "@visx/brush": "^2.6.0",
+    "@visx/legend": "^2.10.0",
     "@visx/responsive": "^2.8.0",
     "@visx/scale": "^2.2.2",
     "@visx/text": "^2.3.0",
