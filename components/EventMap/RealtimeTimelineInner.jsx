@@ -7,6 +7,11 @@ import { LinePath } from '@visx/shape'
 import { Text } from '@visx/text'
 import Papa from 'papaparse'
 
+import {
+	colors,
+	ICON_MAP
+} from './StyleSettings'
+
 const getDate = (x) => x.time
 const getVol = (x) => x.scl1
 const getTime = (x) => x.t
@@ -15,7 +20,7 @@ const margin = {
 	top: 20,
 	right: 20,
 	bottom: 50,
-	left: 0
+	left: 20
 }
 
 const RealtimeTimelineInner = ({
@@ -73,29 +78,40 @@ const RealtimeTimelineInner = ({
 			}),
 		[data?.length] // eslint-disable-line react-hooks/exhaustive-deps
 	)
-
+	
 	const line = useMemo(() => {
-		return <LinePath
+		return <>
+		{Object.entries(colors).map(([key, color], i) => <LinePath
+		key={i}
+		// WE NEED REAL DATA THIS IS FAKE!!!!
+		// WE NEED REAL DATA THIS IS FAKE!!!!
+		// WE NEED REAL DATA THIS IS FAKE!!!!
+		// WE NEED REAL DATA THIS IS FAKE!!!!
+		// WE NEED REAL DATA THIS IS FAKE!!!!
+		// WE NEED REAL DATA THIS IS FAKE!!!!
+		// WE NEED REAL DATA THIS IS FAKE!!!!
 		data={data}
 		x={(d) => xScale(getTime(d))}
-		y={(d) => yScale(getVol(d))}
-		stroke={'white'}
+		y={(d) => yScale(getVol(d)) + i * 40 + 20}
+		stroke={color}
 		strokeWidth={0.5}
-	/>
+	/>)}
+		</>
 	},[data.length, dataSnapshot]) // eslint-disable-line react-hooks/exhaustive-deps
 	if (!data?.length){
 		return null
 	}
 
 	return (
-		<svg width={width} height={height}>
-			<g>
+		<svg width={width - margin.left} height={height} >
+		<rect y={margin.top} width={xMax + 20} height={yMax} stroke="white" fillOpacity={0.5} />
+			<Group>
 				<text x={xMax/2} y={yMax + margin.bottom - 10} fill="white" textAnchor='middle' fontFamily="Arial, sans-serif" fontSize="10px">
 					Realtime Data
 				</text>
 				<Group left={xOffset}>
 					{line}
-					<AxisBottom
+					{/* <AxisBottom
 						scale={xScale}
 						label="Date"
 						top={height - margin.bottom}
@@ -107,11 +123,11 @@ const RealtimeTimelineInner = ({
 							textAnchor: 'middle',
 							fontFamily: "'Jost', sans-serif"
 						})}
-					/>
+					/> */}
 				</Group>
-			</g>
+			</Group>
 		</svg>
 	)
 }
 
-export default React.memo(RealtimeTimelineInner)
+export default RealtimeTimelineInner

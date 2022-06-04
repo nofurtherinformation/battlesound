@@ -5,24 +5,17 @@ import { AxisBottom } from '@visx/axis'
 import { Group } from '@visx/group'
 import { LinePath } from '@visx/shape'
 import { Text } from '@visx/text'
+import {
+	colors,
+	ICON_MAP
+} from './StyleSettings'
 
 const getDate = (x) => x.time
 
-const ICON_MAP = {
-	EXPLOSION: "/img/EXPLOSION.png",
-	SIREN: "/img/SIREN.png",
-	BIRD: "/img/BIRD.png",
-	DOG: "/img/DOG.png",
-	TRAFFIC: "/img/TRAFFIC.png"
-}
-const colors = {
-	Mic1: '#ffffff',
-	Mic2: '#c6c6c6',
-	Mic3: '#8c8c8c'
-}
+
 const margin = {
 	top: 20,
-	right: 0,
+	right: 20,
 	bottom: 50,
 	left: 5
 }
@@ -56,16 +49,15 @@ const TimelineInner = ({
 					dateExtent[1]
 				]
 			}),
-		[width, soundData?.length] // eslint-disable-line react-hooks/exhaustive-deps
+		[xMax, width, soundData?.length  && JSON.stringify(soundData[0])] // eslint-disable-line react-hooks/exhaustive-deps
 	)
-
 	const scaleFrequency = useMemo(
 		() =>
 			scaleLinear({
 				range: [yMax, 0],
 				domain: [0, 3000]
 			}),
-		[soundData?.length] // eslint-disable-line react-hooks/exhaustive-deps
+		[yMax, soundData?.length && JSON.stringify(soundData[0])] // eslint-disable-line react-hooks/exhaustive-deps
 	)
 
 	return (
@@ -160,4 +152,4 @@ const TimelineInner = ({
 	)
 }
 
-export default React.memo(TimelineInner)
+export default TimelineInner

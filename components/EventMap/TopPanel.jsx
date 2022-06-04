@@ -84,6 +84,16 @@ export function TopPanel({
 				<Grid item xs={12} sx={{ mb: 1 }}>
 					<Divider />
 				</Grid>
+				<Grid item xs={10} md={9} lg={9} sx={{height:'35vh'}}>
+					<Timeline
+						{...{
+							data,
+							soundData,
+							handleChartClick,
+							activePhone
+						}}
+					/>
+				</Grid>
 				<Grid item xs={1}>
 					{['Mic1', 'Mic2', 'Mic3'].map((phone, i) => (
 						<Button
@@ -114,17 +124,6 @@ export function TopPanel({
 						Reset &times;
 					</Button>
 				</Grid>
-				<Grid item xs={10} md={9} lg={9} sx={{height:'35vh'}}>
-					<Timeline
-						{...{
-							data,
-							soundData,
-							handleChartClick,
-							activePhone
-						}}
-					/>
-				</Grid>
-
 				<Grid item xs={12} md={2}>
 					<Stack>
 						<Typography fontWeight="bold">Map Icons</Typography>

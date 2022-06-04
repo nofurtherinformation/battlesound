@@ -4,6 +4,14 @@ import TimelineInner from  './TimelineInner';
 import RealtimeTimelineInner from './RealtimeTimelineInner'
 
 export const Timeline = ({ data, soundData, handleChartClick, activePhone }) => {
+	
+		// WE NEED REAL DATA THIS IS FAKE!!!!
+		// WE NEED REAL DATA THIS IS FAKE!!!!
+		// WE NEED REAL DATA THIS IS FAKE!!!!
+		// WE NEED REAL DATA THIS IS FAKE!!!!
+		// WE NEED REAL DATA THIS IS FAKE!!!!
+		// WE NEED REAL DATA THIS IS FAKE!!!!
+		// WE NEED REAL DATA THIS IS FAKE!!!!
 	return (
 		<ParentSize>
 			{(parent) => (
