@@ -22,8 +22,7 @@ import MapMarkers from './MapMarkers'
 import { AudioPlayer } from './AudioPlayer'
 
 const mapStyle = 'mapbox://styles/dhalpern/cl2ih86m6000414lt3r30nf6h'
-const MAPBOX_TOKEN =
-	'pk.eyJ1IjoiZGhhbHBlcm4iLCJhIjoiY2p3MHFvZHg2MDcyczQ4bXBjNW85aDh2OCJ9.OUluk6vAGe5BVXLOiGIoQQ'
+const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_API_KEY
 const defaultPlaceholder = "/audio/placeholder.wav"
 
 const TextMap = {

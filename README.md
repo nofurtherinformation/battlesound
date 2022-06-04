@@ -1,3 +1,21 @@
+# License
+
+This code repository and website are licensed under Creative Commons Non-Commercial Share Alike Attribution 4.0. An acceptable license is below and __must__ accompany the website during all publications, derivatives, and presentations that use part or all of the code in this repo:
+
+```
+Map Design, Programming, and Data Visualization (c) Dylan Halpern, 2022. Licensed Under Creative Commons NC SA Attribution 4.0
+```
+
+# Env Variables
+
+There are two required env variables:
+
+`NEXT_PUBLIC_SOUND_DATA_ENDPOINT` should point to the sound directory
+`NEXT_PUBLIC_MAPBOX_API_KEY` should allow Mapbox basemap API access
+
+The mapbox basemap style is available at this style URL: mapbox://styles/dhalpern/cl2ih86m6000414lt3r30nf6h
+--
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
