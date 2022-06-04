@@ -64,6 +64,8 @@ export const MethodModal = ({ open, handleClose }) => {
 						diam. Vulputate ut pharetra sit amet aliquam. Nulla
 						pellentesque dignissim enim sit. At varius vel pharetra
 						vel.
+						<br/> <br/>
+						Map Design, Programming, and Data Visualization (c) Dylan Halpern, 2022. Licensed Under Creative Commons NC SA Attribution 4.0
 					</Typography>
 					<Button
 						onClick={handleClose}
